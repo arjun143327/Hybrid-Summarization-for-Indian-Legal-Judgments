@@ -18,15 +18,17 @@ rather than deciding silently, per the project's stated workflow).
       duplicate IDs (`results/logs/data_quality_report.md`)
 
 ## Phase 2 — Feature Extraction (Weeks 2–3)
-- [x] TF-IDF vectorizer fit on train set (fit strictly on 7,028 train docs, vocab size: 27,216, cached to `data/processed/features/tfidf_vectorizer.pkl`)
+- [x] TF-IDF vectorizer fit on train set (fit strictly on 7,028 train docs, vocab size: 27,216, cached to `data/processed/features/tfidf_vectorizer.pkl`; sum-of-weights aggregation fix approved)
 - [x] Position feature (implemented `src/features/position.py`, normalized pos_ij = j / M_i)
-- [x] NER extraction (spaCy/NLTK) + counts (implemented `src/features/ner.py`, using NLTK `pos_tag` + `ne_chunk` fallback with original surface casing)
-- [ ] Word2Vec-based cosine feature (for C1/C2)
-- [ ] SBERT-based cosine feature (for C3)
-- [ ] WMD pairwise computation (for C1/C2 feature vector + C1 redundancy step)
+- [x] NER extraction (spaCy primary / NLTK fallback) + counts (implemented `src/features/ner.py`, spaCy `en_core_web_sm` active; review fix approved)
+- [x] Word2Vec-based cosine feature (for C1/C2; implemented `src/features/embeddings_w2v.py` using `glove-wiki-gigaword-100` with mean document embedding & Sim_cos)
+- [x] SBERT-based cosine feature (for C3; implemented `src/features/embeddings_sbert.py` using `all-MiniLM-L6-v2`)
+- [x] WMD pairwise computation (for C1/C2 feature vector + C1 redundancy step; implemented `src/features/wmd.py` via gensim & POT)
 - [ ] Cache feature matrices per config to `data/processed/features/`
 
 ## Phase 3 — GBR Labeling & Training (Weeks 3–5)
+> **Note on Feature Preprocessing / Scaling**: Feature values will include outliers from merged/under-split long sentences (e.g. Case 914 Sentence 2, NER count 28); apply RobustScaler or StandardScaler to features before GBR training rather than using raw values.
+
 - [ ] Implement max-ROUGE-to-reference-sentence labeling (`02_METHODOLOGY.md`)
 - [ ] (Optional) Side-validation: greedy-oracle labels on ~50-doc sample,
       correlation check against max-match labels
@@ -104,15 +106,37 @@ rather than deciding silently, per the project's stated workflow).
     - *Outliers*: 45 short judgments (<20 sentences, 0.63%), 172 long judgments (>500 sentences, 2.41%), 0 empty headnotes/judgments. All 7,128 documents preserved.
   - **Status**: Phase 1 reviewed and approved.
   - **OCR Truncation Confirmed Decision**: The OCR line-start truncation issue (observed in 19.35% of corpus documents, predominantly 1950s–1970s scans having artifacts like `vil Appeal`, `rit Petition`) is a deliberate, documented design decision. Left uncorrected in code, to be faithfully written up as a known data limitation in the paper's Discussion section, not something to revisit in code.
-- **2026-09-11 (Phase 2 Batch 1: TF-IDF, Position, NER Completed)**:
+- **2026-09-11 (Phase 2 Batch 1: TF-IDF, Position, NER Completed & Review Fixes Applied)**:
   - **TF-IDF Vectorizer (`src/features/tfidf.py`)**:
     - Fitted strictly on the 7,028 training documents (test set held out).
     - Uses lemmatized, stopword-filtered token stream per spec; retained all legal load-bearing terms (`held`, `appellant`, `respondent`, `petitioner`, etc.).
     - Vocabulary size: **27,216** unique terms (pruned with `min_df=5`, `max_df=0.85`). Cached to `data/processed/features/tfidf_vectorizer.pkl`.
+    - *Aggregation Fix*: Changed sentence-level scoring from mean-pooling to sum of TF-IDF weights over tokens in vocabulary. Eliminates the short-sentence inflation artifact (e.g. `"December 18."` previously scored 0.5000 via mean-pooling, outscoring substantive sentences; now scores 1.0000 while substantive legal reasoning sentences score 2.5–5.5+).
   - **Position Feature (`src/features/position.py`)**:
     - Implemented normalized sentence position: $\text{pos}_{ij} = j / M_i$ (where $j \in [0, M_i-1]$).
   - **NER Feature (`src/features/ner.py`)**:
-    - Active backend: **NLTK (`pos_tag` + `ne_chunk`)** (spaCy was not installed in this Python environment; gracefully fell back to NLTK per specification).
-    - Preserves original surface casing for entity detection.
-  - **Sanity Inspection**: Verified on Case IDs `5243`, `914`, and `205`. High-TF-IDF terms correctly represent document substance (e.g. municipal housing allottees in 5243; promotees and engineers in 914; tax accrual in 205).
-  - **Status**: Stopped for user review before starting embedding features (Word2Vec / SBERT) and WMD.
+    - Active backend: **spaCy (`en_core_web_sm`)** installed and set as primary engine per `01_DATA_SPEC.md` (NLTK retained as documented fallback path in code).
+    - Eliminates NLTK false entity tagging artifacts (e.g. `"Civil"` in `"Civil Appeal No. 123(N) of 1973."` is no longer falsely tagged as `PERSON`; dates and judicial bodies are accurately recognized as `DATE`, `CARDINAL`, and `ORG`).
+  - **Status**: Batch 1 review fixes approved. Added forward-looking note under Phase 3: feature values will include outliers from merged/under-split long sentences (e.g. Case 914 Sentence 2, NER count 28); apply RobustScaler or StandardScaler to features before GBR training rather than using raw values.
+- **2026-09-11 (Phase 2 Batch 2: Word2Vec Cosine, SBERT Cosine, WMD Implemented & Sanity Checked)**:
+  - **Word2Vec Cosine Feature (`src/features/embeddings_w2v.py`)**:
+    - Pretrained vector model: `glove-wiki-gigaword-100` (100d, 400,000 vocab) cached locally in native binary format (`vectors.kv`, 134 MB) for sub-second mmap loading and fast computation without local RAM bottlenecks; supports `word2vec-google-news-300` for Colab environments.
+    - Sentence vector: unweighted mean of constituent in-vocab word vectors.
+    - Document embedding: mean of sentence vectors ($d_i = \frac{1}{M_i} \sum_j s_{ij}$).
+    - Cosine similarity: $Sim_{cos}(s_{ij}) = \frac{s_{ij} \cdot d_i}{\|s_{ij}\| \|d_i\|}$ per base paper eq. 3.
+  - **SBERT Cosine Feature (`src/features/embeddings_sbert.py`)**:
+    - Model: `all-MiniLM-L6-v2` via `sentence-transformers` (384-dimensional dense embeddings).
+    - Document embedding: mean of sentence embeddings in SBERT space.
+    - Cosine similarity: $Sim_{cos}(s_{ij}) = \frac{s_{ij} \cdot d_i}{\|s_{ij}\| \|d_i\|}$ (vectorized over all document sentences; takes ~3.5s per document on CPU).
+  - **WMD Feature & Pairwise Primitive (`src/features/wmd.py`)**:
+    - Installed `POT` (Python Optimal Transport 0.9.7) for Gensim `wmdistance`.
+    - Implemented reusable pairwise distance function `pairwise_wmd(text1, text2, model)` for both Stage 1 and Stage 3 (C1 WMD redundancy filter $WMD(s_{ij}, s_{ik}) \ge \delta$).
+    - Sentence-to-document WMD feature: $WMD(s_{ij}, d_i)$ computed against document tokens.
+    - Pairwise sentence-to-sentence distance verified (<1ms per pair).
+  - **Sanity Check on Sample Docs (Case IDs 5243, 914, 205)**:
+    - Logged all 7 features across the first 5 sentences for each sample case in `src/features/sanity_check_features.py`.
+    - Verified proper handling of short sentences, long title recitals, and entity counts.
+  - **Compute Split Observation**:
+    - Word2Vec vector operations and pairwise sentence WMD are fast locally.
+    - SBERT CPU encoding takes ~3.5s per doc (~6.8 hours for 7,028 docs). Full-corpus feature extraction will be structured for Google Colab GPU execution per project compute plan.
+  - **Status**: Batch 2 complete. Paused before Phase 3 (GBR labeling/training) for user review.
