@@ -1,0 +1,20 @@
+# Core Scientific & ML Libraries
+numpy>=1.24.0
+scipy>=1.10.0
+scikit-learn>=1.3.0
+pandas>=2.0.0
+
+# NLP & Summarization
+nltk>=3.8.0
+rouge-score>=0.1.2
+spacy>=3.7.0
+
+# Deep Learning & Embeddings
+torch>=2.0.0
+transformers>=4.35.0
+sentence-transformers>=2.2.0
+
+# Utilities & Configuration
+pyyaml>=6.0
+tqdm>=4.66.0
+requests>=2.31.0
