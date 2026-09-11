@@ -111,21 +111,19 @@ def compute_sentence_tfidf_scores(
     vectorizer: TfidfVectorizer,
 ) -> List[float]:
     """
-    Computes a scalar TF-IDF score for each sentence in a document.
-    Per standard extractive feature extraction:
-    Sum of TF-IDF weights for terms present in the sentence divided by sentence word count.
+    Computes a scalar TF-IDF score for each sentence in a document:
+    Sum of TF-IDF weights over the sentence's tokens present in the fitted vocabulary.
+    Avoids short-sentence inflation artifact caused by mean pooling.
     """
     if not sentences:
         return []
 
     tfidf_matrix = vectorizer.transform(sentences)
     scores = []
-    for i, sent in enumerate(sentences):
-        words = [w for w in sent.split() if len(w) > 1]
-        n_words = max(len(words), 1)
+    for i in range(len(sentences)):
         row = tfidf_matrix.getrow(i)
         row_sum = float(row.sum())
-        scores.append(row_sum / n_words)
+        scores.append(round(row_sum, 6))
 
     return scores
 
