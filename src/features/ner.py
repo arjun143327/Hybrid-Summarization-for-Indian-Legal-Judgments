@@ -19,7 +19,7 @@ _SPACY_NLP = None
 try:
     import spacy
     try:
-        _SPACY_NLP = spacy.load("en_core_web_sm")
+        _SPACY_NLP = spacy.load("en_core_web_sm", disable=["tagger", "parser", "attribute_ruler", "lemmatizer"])
         SPACY_AVAILABLE = True
     except Exception:
         SPACY_AVAILABLE = False

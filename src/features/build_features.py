@@ -40,7 +40,8 @@ def assemble_document_raw_features(
     w2v_model=None,
     sbert_model=None,
     tokenizer: Optional[LegalTokenizer] = None,
-) -> np.ndarray:
+    return_fallback_mask: bool = False,
+) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
     """
     Extracts and concatenates the raw feature matrix for a single document's sentences:
     X_i in R^{M_i x D}
@@ -59,18 +60,24 @@ def assemble_document_raw_features(
         Loaded SBERT model (required for C3).
     tokenizer : LegalTokenizer, optional
         Tokenizer instance.
+    return_fallback_mask : bool, optional
+        If True and config in ('C1', 'C2'), returns (X_raw, fallback_mask).
+        fallback_mask is a boolean array of length M_i where True indicates
+        sentences that triggered the WMD OOV fallback (max_fallback_dist = 3.0).
 
     Returns
     -------
-    np.ndarray
-        Raw feature matrix of shape (len(sentences), n_features).
+    np.ndarray or Tuple[np.ndarray, np.ndarray]
+        Raw feature matrix of shape (len(sentences), n_features), or
+        tuple of (X_raw, fallback_mask) if return_fallback_mask=True.
     """
     if config not in CONFIG_FEATURE_NAMES:
         raise ValueError(f"Unknown config: {config}. Must be one of {list(CONFIG_FEATURE_NAMES.keys())}")
 
     if not sentences:
         n_feats = len(CONFIG_FEATURE_NAMES[config])
-        return np.empty((0, n_feats), dtype=np.float32)
+        empty_mat = np.empty((0, n_feats), dtype=np.float32)
+        return (empty_mat, np.empty((0,), dtype=bool)) if return_fallback_mask else empty_mat
 
     if tokenizer is None:
         tokenizer = LegalTokenizer()
@@ -81,12 +88,20 @@ def assemble_document_raw_features(
     pos_vals = np.array(compute_position_features(sentences), dtype=np.float32)
 
     cols = [tfidf_vals, ner_vals, pos_vals]
+    fallback_mask = np.zeros(len(sentences), dtype=bool)
 
     if config in ("C1", "C2"):
         if w2v_model is None:
             raise ValueError(f"w2v_model is required for config {config}")
         cos_w2v = compute_w2v_cosine_features(sentences, w2v_model, tokenizer=tokenizer)
-        wmd_vals = compute_document_wmd_features(sentences, w2v_model, tokenizer=tokenizer)
+        if return_fallback_mask:
+            wmd_vals, fallback_mask = compute_document_wmd_features(
+                sentences, w2v_model, tokenizer=tokenizer, return_fallback_mask=True
+            )
+        else:
+            wmd_vals = compute_document_wmd_features(
+                sentences, w2v_model, tokenizer=tokenizer, return_fallback_mask=False
+            )
         cols.extend([cos_w2v, wmd_vals])
 
     elif config == "C3":
@@ -97,6 +112,8 @@ def assemble_document_raw_features(
 
     # Stack column-wise into (M_i, n_features) matrix
     X_raw = np.column_stack(cols).astype(np.float32)
+    if return_fallback_mask:
+        return X_raw, fallback_mask
     return X_raw
 
 

@@ -9,7 +9,7 @@ Built as a reusable pairwise-distance function and feature extraction pipeline
 using Gensim's KeyedVectors and Python Optimal Transport (POT).
 """
 
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Tuple
 import numpy as np
 from gensim.models import KeyedVectors
 
@@ -80,8 +80,9 @@ def compute_document_wmd_features(
     model: KeyedVectors,
     tokenizer: Optional[LegalTokenizer] = None,
     norm: bool = True,
-    max_fallback_dist: float = 3.0
-) -> np.ndarray:
+    max_fallback_dist: float = 3.0,
+    return_fallback_mask: bool = False
+) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
     """
     Computes the sentence-to-document WMD feature for all sentences in a document:
     WMD(s_ij, d_i)
@@ -98,14 +99,18 @@ def compute_document_wmd_features(
         Whether to normalize word vectors.
     max_fallback_dist : float
         Replacement value if WMD is infinite (e.g. sentence has zero in-vocab tokens).
+    return_fallback_mask : bool
+        If True, also returns a boolean array indicating which sentences triggered fallback.
 
     Returns
     -------
-    np.ndarray
+    np.ndarray or Tuple[np.ndarray, np.ndarray]
         1D array of WMD distance values of shape (len(sentences),).
+        If return_fallback_mask is True, returns (wmd_scores, fallback_mask).
     """
     if not sentences:
-        return np.array([], dtype=np.float32)
+        empty = np.array([], dtype=np.float32)
+        return (empty, np.array([], dtype=bool)) if return_fallback_mask else empty
 
     if tokenizer is None:
         tokenizer = LegalTokenizer()
@@ -115,16 +120,61 @@ def compute_document_wmd_features(
 
     # Full document tokens
     doc_tokens = [tok for s_tokens in tokenized_sentences for tok in s_tokens]
+    doc_in_vocab = [w for w in doc_tokens if w in model]
 
-    # Compute sentence-to-document WMD
+    if not doc_in_vocab:
+        fallback_scores = np.full(len(sentences), max_fallback_dist, dtype=np.float32)
+        fallback_mask = np.ones(len(sentences), dtype=bool)
+        return (fallback_scores, fallback_mask) if return_fallback_mask else fallback_scores
+
+    from collections import Counter
+    from scipy.spatial.distance import cdist
+    from ot import emd2
+
+    def get_norm_vec(w):
+        v = model[w].astype(np.float64)
+        if norm:
+            nv = np.linalg.norm(v)
+            if nv > 0:
+                v = v / nv
+        return v
+
+    doc_counts = Counter(doc_in_vocab)
+    doc_unique = list(doc_counts.keys())
+    doc_v = np.array([get_norm_vec(w) for w in doc_unique], dtype=np.float64)
+    doc_len = len(doc_in_vocab)
+    b = np.array([doc_counts[w] / doc_len for w in doc_unique], dtype=np.float64)
+
+    # Compute sentence-to-document WMD using exact POT EMD
     wmd_scores = []
+    fallback_flags = []
     for s_tokens in tokenized_sentences:
-        dist = pairwise_wmd(s_tokens, doc_tokens, model, tokenizer=tokenizer, norm=norm)
-        if np.isinf(dist):
-            dist = max_fallback_dist
-        wmd_scores.append(dist)
+        s_in_vocab = [w for w in s_tokens if w in model]
+        if not s_in_vocab:
+            wmd_scores.append(max_fallback_dist)
+            fallback_flags.append(True)
+            continue
 
-    return np.array(wmd_scores, dtype=np.float32)
+        s_counts = Counter(s_in_vocab)
+        s_unique = list(s_counts.keys())
+        s_v = np.array([get_norm_vec(w) for w in s_unique], dtype=np.float64)
+        s_len = len(s_in_vocab)
+        a = np.array([s_counts[w] / s_len for w in s_unique], dtype=np.float64)
+
+        M = cdist(s_v, doc_v, metric="euclidean")
+        cost = emd2(a, b, M)
+        if np.isinf(cost) or np.isnan(cost):
+            cost = max_fallback_dist
+            fallback_flags.append(True)
+        else:
+            fallback_flags.append(False)
+        wmd_scores.append(float(cost))
+
+    scores_arr = np.array(wmd_scores, dtype=np.float32)
+    mask_arr = np.array(fallback_flags, dtype=bool)
+    if return_fallback_mask:
+        return scores_arr, mask_arr
+    return scores_arr
 
 
 def compute_pairwise_wmd_matrix(
