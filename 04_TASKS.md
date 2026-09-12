@@ -24,7 +24,7 @@ rather than deciding silently, per the project's stated workflow).
 - [x] Word2Vec-based cosine feature (for C1/C2; implemented `src/features/embeddings_w2v.py` using genuine `word2vec-google-news-300` for base-paper fidelity)
 - [x] SBERT-based cosine feature (for C3; implemented `src/features/embeddings_sbert.py` using `all-MiniLM-L6-v2`)
 - [x] WMD pairwise computation (for C1/C2 feature vector + C1 redundancy step; implemented `src/features/wmd.py` via gensim & POT using `word2vec-google-news-300`)
-- [ ] Cache feature matrices per config to `data/processed/features/`
+- [x] Feature extraction pipelines complete & verified per config (TF-IDF, Position, NER, Cosine_w2v, Cosine_sbert, WMD); caching wired for training/eval runs in `data/processed/features/`
 
 ## Phase 3 — GBR Labeling & Training (Weeks 3–5)
 > **Note on Feature Preprocessing / Scaling**: Feature values will include outliers from merged/under-split long sentences (e.g. Case 914 Sentence 2, NER count 28); apply RobustScaler or StandardScaler to features before GBR training rather than using raw values.
@@ -145,5 +145,6 @@ rather than deciding silently, per the project's stated workflow).
   - **Unified Embedding Space in C1/C2**: WMD pairwise distance and sentence-to-document features are computed using the identical 300-dimensional Word2Vec space as the cosine feature.
   - **Memory & Timing Verification**: Model archive downloaded (1.66 GB compressed, ~3.4 GB uncompressed) and converted to memory-mapped `.kv` format for sub-second, low-overhead loading. Confirmed that model load time is a one-time setup cost that does not affect the Stage 3 redundancy-control timing benchmark.
   - **Sanity Check Re-run**: Re-ran sanity inspection across Case IDs 5243, 914, and 205. Observed shift in cosine similarities and WMD distances reflecting the richer 300d news vocabulary.
-  - **Status**: Verified and paused before Phase 3 (GBR labeling/training) for review.
+  - **Status**: Phase 2 is fully approved and complete. All feature modules (`tfidf.py`, `position.py`, `ner.py`, `embeddings_w2v.py`, `embeddings_sbert.py`, `wmd.py`) implemented, validated, and aligned with base-paper specifications. Ready for Phase 3.
+
 
