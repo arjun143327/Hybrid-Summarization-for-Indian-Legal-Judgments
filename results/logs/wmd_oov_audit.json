@@ -1,0 +1,57 @@
+{
+  "total_documents": 7028,
+  "total_sentences": 1010961,
+  "total_oov_sentences": 30843,
+  "oov_rate_pct": 3.050859528705855,
+  "ocr_doc_count": 4913,
+  "ocr_sentences": 727055,
+  "ocr_oov_sentences": 21208,
+  "ocr_oov_rate_pct": 2.9169732688723684,
+  "non_ocr_doc_count": 2115,
+  "non_ocr_sentences": 283906,
+  "non_ocr_oov_sentences": 9635,
+  "non_ocr_oov_rate_pct": 3.3937289102731185,
+  "audit_time_sec": 104.84655928611755,
+  "samples": [
+    {
+      "sent_idx": 14,
+      "text": "or f.o.b."
+    },
+    {
+      "sent_idx": 22,
+      "text": "."
+    },
+    {
+      "sent_idx": 71,
+      "text": "829."
+    },
+    {
+      "sent_idx": 5,
+      "text": "281 1954."
+    },
+    {
+      "sent_idx": 4,
+      "text": "269 1954."
+    },
+    {
+      "sent_idx": 39,
+      "text": "(i) [195o] S.C.R."
+    },
+    {
+      "sent_idx": 4,
+      "text": "1954."
+    },
+    {
+      "sent_idx": 46,
+      "text": "."
+    },
+    {
+      "sent_idx": 4,
+      "text": "1954."
+    },
+    {
+      "sent_idx": 13,
+      "text": "25."
+    }
+  ]
+}

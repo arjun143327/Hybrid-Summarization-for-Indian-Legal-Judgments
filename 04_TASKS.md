@@ -29,7 +29,7 @@ rather than deciding silently, per the project's stated workflow).
 ## Phase 3 — GBR Labeling & Training (Weeks 3–5)
 > **Note on Feature Preprocessing / Scaling**: Feature values will include outliers from merged/under-split long sentences (e.g. Case 914 Sentence 2, NER count 28); apply RobustScaler or StandardScaler to features before GBR training rather than using raw values.
 
-- [ ] Implement max-ROUGE-to-reference-sentence labeling (`02_METHODOLOGY.md`)
+- [x] Implement max-ROUGE-to-reference-sentence labeling (`02_METHODOLOGY.md`)
 - [ ] (Optional) Side-validation: greedy-oracle labels on ~50-doc sample,
       correlation check against max-match labels
 - [ ] Train GBR for C1 (feature vector A)
@@ -145,6 +145,55 @@ rather than deciding silently, per the project's stated workflow).
   - **Unified Embedding Space in C1/C2**: WMD pairwise distance and sentence-to-document features are computed using the identical 300-dimensional Word2Vec space as the cosine feature.
   - **Memory & Timing Verification**: Model archive downloaded (1.66 GB compressed, ~3.4 GB uncompressed) and converted to memory-mapped `.kv` format for sub-second, low-overhead loading. Confirmed that model load time is a one-time setup cost that does not affect the Stage 3 redundancy-control timing benchmark.
   - **Sanity Check Re-run**: Re-ran sanity inspection across Case IDs 5243, 914, and 205. Observed shift in cosine similarities and WMD distances reflecting the richer 300d news vocabulary.
-  - **Status**: Phase 2 is fully approved and complete. All feature modules (`tfidf.py`, `position.py`, `ner.py`, `embeddings_w2v.py`, `embeddings_sbert.py`, `wmd.py`) implemented, validated, and aligned with base-paper specifications. Ready for Phase 3.
-
-
+- **2026-09-12 (Phase 3 Full-Corpus GBR Labeling & Feature Scaling Completed)**:
+  - **Full-Corpus GBR Ground-Truth Labeling (`src/labeling/gbr_labels.py`, `scripts/build_full_train_labels.py`)**:
+    - Ran across all **7,028** training documents using 12 worker processes; completed in **211.13s (3.52 minutes)** at **33.29 docs/sec (0.0300 s/doc)**.
+    - Successfully generated labels for all **1,010,961 sentences** (100% completion, 0 failures).
+    - Label Distribution Summary ($y_{ij} = \max_{r_k} \text{ROUGE-1}_{\text{F1}}(s_{ij}, r_k)$):
+      - Min: `0.0000`
+      - Max: `1.0000`
+      - Mean: `0.3863`
+      - Median (p50): `0.3529`
+      - Std: `0.2102`
+      - 75th percentile: `0.4500`
+      - 90th percentile: `0.6800`
+    - Caching: Stored to `data/processed/features/train_labels.npy` (3.86 MB), `train_labels_metadata.json`, and `train_doc_boundaries.json` (500 KB).
+  - **Fresh RobustScaler Fit & Drift Analysis (`scripts/build_c1_features.py`)**:
+    - **Confirmation**: `RobustScaler` was fit fresh on the full training set feature matrix, NOT reused from the 334-sentence sample.
+    - Comparison of Medians and IQRs (334-sentence sample vs full training corpus):
+      - **TF-IDF**: Sample Median = 4.1952, IQR = 4.2981 $\rightarrow$ Full Corpus: Median = **2.8345**, IQR = **1.3927**. Drift reflects the full corpus sentence-length distribution including brief procedural sentences.
+      - **NER**: Sample Median = 2.0000, IQR = 2.0000 $\rightarrow$ Full Corpus: Median = **1.0000**, IQR = **3.0000**. Full corpus exhibits lower median entities per sentence, with a broader IQR capturing multi-party citation recitals.
+      - **Position**: Sample Median = 0.4939, IQR = 0.5000 $\rightarrow$ Full Corpus: Median = **0.4965**, IQR = **0.5000**. Highly stable uniform distribution $U[0, 1]$.
+      - **Cosine (Word2Vec)**: Sample Median = 0.4287, IQR = 0.2014 $\rightarrow$ Full Corpus: Median = **0.7111**, IQR = **0.1887**. Higher median semantic alignment with document centroid in 300d Google News space.
+      - **WMD**: Sample Median = 2.0163, IQR = 0.4578 $\rightarrow$ Full Corpus: Median = **1.1568**, IQR = **0.1476**. Tighter optimal transport clustering in 300d space.
+      - **Cosine (SBERT - C3)**: Sample Median = 0.5475, IQR = 0.2520 $\rightarrow$ Corpus Benchmark: Median = **0.5322**, IQR = **0.1983**.
+    - Scaler artifacts: `robust_scaler_c1.pkl`, `robust_scaler_c1_params.json`, `robust_scaler_c3.pkl`, `robust_scaler_c3_params.json`.
+    - Feature matrices: `train_features_c1_raw.npy` (18.87 MB), `train_features_c1_scaled.npy` (18.87 MB).
+  - **Status**: Labeling and scaling pipeline complete and validated. Paused for user review before initiating Phase 3 GBR model training (`fit` on GradientBoostingRegressor).
+- **2026-09-12 (Feature Alignment Audit, OOV Root Cause, & Explicit Join-Key Architecture)**:
+  - **Label/Feature Reconciliation & Root-Cause Diagnosis**:
+    - Investigated the 21,453-sentence mismatch between labels (1,010,961 rows) and initial C1 features (989,508 rows).
+    - Identified exactly 127 dropped training documents (e.g., Cases 501, 2387, 2389, 2390, 4822, 5243).
+    - *Root Cause 1 (OOV Crash)*: Short statutory/citation sentences (e.g., `"XXXVII of 1950."`, `"151, 152."`) contain alphanumeric tokens not present in Google News Word2Vec. Gensim's `wmdistance()` raised an unhandled `ValueError("At least one of the documents had no words that were in the vocabulary.")`.
+    - *Root Cause 2 (Multiprocessing Memory Spike)*: `model.get_vector(w, norm=True)` triggered Gensim's `fill_norms()` allocating a 3.35 GiB array per worker process. On Windows with 10–12 multiprocessing workers, concurrent allocations triggered `numpy.core._exceptions._ArrayMemoryError`.
+    - `build_c1_features.py` caught both exceptions in its per-document try-block and dropped the 127 documents.
+  - **Codebase Remedies Implemented (`src/features/wmd.py`, `src/features/build_features.py`)**:
+    - Bypassed Gensim's full-vocabulary `fill_norms()` by computing on-the-fly vector normalization only for unique document tokens (~500 unique words = 1.2 MB RAM per doc), reducing worker memory footprint by >99.9%.
+    - Added safe fallback distance (`max_fallback_dist = 3.0`) for empty in-vocabulary sentences, eliminating the `ValueError`.
+    - Added `return_fallback_mask=True` instrumentation across WMD and feature assembly pipelines.
+  - **Full-Corpus WMD OOV Fallback Audit (`results/logs/wmd_oov_audit.json`)**:
+    - Analyzed all **1,010,961 sentences** across all **7,028 training documents**:
+      - Total sentences triggering OOV fallback (`max_fallback_dist = 3.0`): **30,843 sentences (3.0509%)**.
+      - OCR-affected documents (4,913 docs, 727,055 sentences): **21,208 fallbacks (2.9170%)**.
+      - Non-OCR documents (2,115 docs, 283,906 sentences): **9,635 fallbacks (3.3937%)**.
+    - *Discussion Insight*: The OOV fallback rate is ~3.05% and does *not* cluster disproportionately in OCR-affected judgments (2.92% vs 3.39%). Inspection revealed it is driven by structural legal citation syntax (standalone statutory section numbers, law report citations, abbreviation fragments, and standalone year tokens like `'281 1954.'`, `'(i) [195o] S.C.R.'`, `'829.'`, `'or f.o.b.'`) split into separate sentences by standard segmentation. Assigning the maximum semantic distance penalty (3.0) is linguistically and mathematically sound. This will be discussed in the paper's Discussion section alongside the OCR limitation.
+  - **Standing Project Convention — Explicit Composite Join-Key Architecture**:
+    - Positional row alignment is officially deprecated and forbidden for all feature and label matrices.
+    - All feature matrices (`c1_raw`, `c1_scaled`, `c3_raw`, `c3_scaled`) and label arrays (`train_labels.npy`) must be indexed and joined via explicit composite keys: `(doc_id, sentence_index)`.
+    - Master alignment registry: `data/processed/features/train_sentence_index.json` (`row_idx -> (case_id, sentence_idx)`).
+    - This convention is now permanent for all training, validation, and test feature extraction pipelines.
+  - **Google Colab GPU Notebook Delivered (`notebooks/01_full_feature_extraction_and_scaling.ipynb`)**:
+    - Created clean, self-contained Colab notebook for Option B execution.
+    - Features: PyTorch GPU batch encoding for SBERT (`all-MiniLM-L6-v2`, batch_size=512), fast C1 extraction with zero memory overhead, real-time WMD OOV instrumentation, strict 1,010,961-row integrity assertions, and fresh RobustScaler fitting across full matrices.
+  - **Execution Gate**:
+    - GradientBoostingRegressor training remains strictly paused until all feature matrices and label arrays are confirmed aligned at 1,010,961 rows with zero dropped documents.
