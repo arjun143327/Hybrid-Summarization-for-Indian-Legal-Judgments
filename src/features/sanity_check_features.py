@@ -3,7 +3,7 @@ sanity_check_features.py — Comprehensive sanity inspection of all Phase 2 feat
 1. TF-IDF (sum of weights per sentence)
 2. Position (normalized j / M_i)
 3. NER count (spaCy en_core_web_sm)
-4. Word2Vec Cosine Sim (Sim_cos(s_ij, d_i) via GloVe/W2V mean pooling)
+4. Word2Vec Cosine Sim (Sim_cos(s_ij, d_i) via word2vec-google-news-300 mean pooling)
 5. SBERT Cosine Sim (Sim_cos(s_ij, d_i) via all-MiniLM-L6-v2)
 6. WMD to Document (Word Mover's Distance s_ij to d_i)
 7. Pairwise WMD (s_ij to previous sentence s_i(j-1))

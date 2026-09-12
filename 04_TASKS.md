@@ -21,9 +21,9 @@ rather than deciding silently, per the project's stated workflow).
 - [x] TF-IDF vectorizer fit on train set (fit strictly on 7,028 train docs, vocab size: 27,216, cached to `data/processed/features/tfidf_vectorizer.pkl`; sum-of-weights aggregation fix approved)
 - [x] Position feature (implemented `src/features/position.py`, normalized pos_ij = j / M_i)
 - [x] NER extraction (spaCy primary / NLTK fallback) + counts (implemented `src/features/ner.py`, spaCy `en_core_web_sm` active; review fix approved)
-- [x] Word2Vec-based cosine feature (for C1/C2; implemented `src/features/embeddings_w2v.py` using `glove-wiki-gigaword-100` with mean document embedding & Sim_cos)
+- [x] Word2Vec-based cosine feature (for C1/C2; implemented `src/features/embeddings_w2v.py` using genuine `word2vec-google-news-300` for base-paper fidelity)
 - [x] SBERT-based cosine feature (for C3; implemented `src/features/embeddings_sbert.py` using `all-MiniLM-L6-v2`)
-- [x] WMD pairwise computation (for C1/C2 feature vector + C1 redundancy step; implemented `src/features/wmd.py` via gensim & POT)
+- [x] WMD pairwise computation (for C1/C2 feature vector + C1 redundancy step; implemented `src/features/wmd.py` via gensim & POT using `word2vec-google-news-300`)
 - [ ] Cache feature matrices per config to `data/processed/features/`
 
 ## Phase 3 — GBR Labeling & Training (Weeks 3–5)
@@ -140,3 +140,10 @@ rather than deciding silently, per the project's stated workflow).
     - Word2Vec vector operations and pairwise sentence WMD are fast locally.
     - SBERT CPU encoding takes ~3.5s per doc (~6.8 hours for 7,028 docs). Full-corpus feature extraction will be structured for Google Colab GPU execution per project compute plan.
   - **Status**: Batch 2 complete. Paused before Phase 3 (GBR labeling/training) for user review.
+- **2026-09-12 (Word2Vec Backend Switch to word2vec-google-news-300)**:
+  - **Base-Paper Fidelity Switch**: Switched Word2Vec backend from `glove-wiki-gigaword-100` to genuine `word2vec-google-news-300` (300 dimensions, 3,000,000 vocabulary) in both `src/features/embeddings_w2v.py` and `src/features/wmd.py` for true fidelity to Belila et al. (2026).
+  - **Unified Embedding Space in C1/C2**: WMD pairwise distance and sentence-to-document features are computed using the identical 300-dimensional Word2Vec space as the cosine feature.
+  - **Memory & Timing Verification**: Model archive downloaded (1.66 GB compressed, ~3.4 GB uncompressed) and converted to memory-mapped `.kv` format for sub-second, low-overhead loading. Confirmed that model load time is a one-time setup cost that does not affect the Stage 3 redundancy-control timing benchmark.
+  - **Sanity Check Re-run**: Re-ran sanity inspection across Case IDs 5243, 914, and 205. Observed shift in cosine similarities and WMD distances reflecting the richer 300d news vocabulary.
+  - **Status**: Verified and paused before Phase 3 (GBR labeling/training) for review.
+
