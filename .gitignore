@@ -34,6 +34,8 @@ data/raw/
 
 # Processed sentence extractions and cached feature matrices
 data/processed/
+data/*.zip
+data/*.gz
 
 # Keep data directory structure and frozen split IDs
 !data/
