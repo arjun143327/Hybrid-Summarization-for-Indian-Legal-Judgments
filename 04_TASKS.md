@@ -197,3 +197,32 @@ rather than deciding silently, per the project's stated workflow).
     - Features: PyTorch GPU batch encoding for SBERT (`all-MiniLM-L6-v2`, batch_size=512), fast C1 extraction with zero memory overhead, real-time WMD OOV instrumentation, strict 1,010,961-row integrity assertions, and fresh RobustScaler fitting across full matrices.
   - **Execution Gate**:
     - GradientBoostingRegressor training remains strictly paused until all feature matrices and label arrays are confirmed aligned at 1,010,961 rows with zero dropped documents.
+- **2026-09-13 (Phase 3 Full Feature Matrix Extraction & Label Alignment COMPLETE)**:
+  - **Full-Corpus C1 & C3 Feature Matrices Confirmed**:
+    - Extracted and aligned across all **7,028 training documents** and exactly **1,010,961 sentences** with **zero dropped documents**.
+    - C1 matrix (`train_features_c1_raw.npy`, `train_features_c1_scaled.npy`): `(1010961, 5)` — features: `[tfidf, ner, position, cosine_w2v, wmd]`.
+    - C3 matrix (`train_features_c3_raw.npy`, `train_features_c3_scaled.npy`): `(1010961, 4)` — features: `[tfidf, ner, position, cosine_sbert]`.
+    - Labels array (`train_labels.npy`): `(1010961,)`.
+    - Composite join key registry (`train_sentence_index.json`): `1,010,961` keys mapping `row_idx -> (doc_id, sentence_idx)`.
+    - Document boundaries (`train_doc_boundaries.json`): `7,028` documents mapped with contiguous row spans.
+  - **Colab GPU Execution & Payload Integration**:
+    - Colab T4 GPU encoded all 1,010,961 sentences with SBERT (`all-MiniLM-L6-v2`) in ~2.5 minutes using batch size 512.
+    - Archive `processed_features_c3.zip` downloaded and unzipped into `data/processed/features/`.
+  - **Strict End-to-End Alignment Assertions — ALL PASSED**:
+    - Exact row count match: `len(X_c1_raw) == len(X_c1_scaled) == len(X_c3_raw) == len(X_c3_scaled) == len(train_labels) == len(sentence_keys) == 1,010,961`.
+    - NaN/Inf check: Exactly 0 NaNs and 0 Infs across all 5 arrays.
+    - Shared feature integrity: `max(|X_c1[:, :3] - X_c3[:, :3]|) == 0.00e+00` (exact bitwise match on `[tfidf, ner, position]`).
+    - Randomized spot-checks across multiple random seeds verified exact correspondence between composite join key `(doc_id, sentence_index)` and feature/label values.
+  - **Fresh Full-Corpus RobustScaler Parameters Recorded**:
+    - C1 (5 features):
+      - `tfidf`: Median = `2.8364`, IQR = `1.3949`
+      - `ner`: Median = `1.0000`, IQR = `3.0000`
+      - `position`: Median = `0.4965`, IQR = `0.5000`
+      - `cosine_w2v`: Median = `0.7112`, IQR = `0.1888`
+      - `wmd`: Median = `1.1568`, IQR = `0.1475`
+    - C3 (4 features):
+      - `tfidf`: Median = `2.8364`, IQR = `1.3949`
+      - `ner`: Median = `1.0000`, IQR = `3.0000`
+      - `position`: Median = `0.4965`, IQR = `0.5000`
+      - `cosine_sbert`: Median = `0.5267`, IQR = `0.2024`
+  - **Status & Next Step**: Feature extraction and alignment gate is officially **PASSED**. Ready to proceed immediately to Phase 3 GBR model training (`fit` on GradientBoostingRegressor for C1, C2, and C3).
