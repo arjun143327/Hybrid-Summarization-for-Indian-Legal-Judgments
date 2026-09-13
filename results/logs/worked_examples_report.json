@@ -1,0 +1,1883 @@
+{
+  "examples": [
+    {
+      "label": "SHORT",
+      "doc_id": "4820",
+      "M_i": 14,
+      "k_i": 3,
+      "ki_formula": "max(3, round(0.05 * 14)) = max(3, round(0.7000)) = max(3, 1) = 3",
+      "C1": {
+        "true_topk": [
+          {
+            "sent_idx": 3,
+            "y": 0.5538,
+            "text": "In the first paragraph of the petition it is stated \"This is an application for Review of the order dated 9.12..."
+          },
+          {
+            "sent_idx": 1,
+            "y": 0.5161,
+            "text": "In Special Leave Petition (C) No. 13618 of 1983 CHAMBER MATTER By Circulation The order of the Court was deliv..."
+          },
+          {
+            "sent_idx": 11,
+            "y": 0.4884,
+            "text": "We must however express our deep dissatisfaction and anguish with the indiscriminate manner in which petitions..."
+          }
+        ],
+        "pred_topk": [
+          {
+            "sent_idx": 11,
+            "yhat": 0.5871,
+            "y_true": 0.4884,
+            "text": "We must however express our deep dissatisfaction and anguish with the indiscriminate manner in which petitions..."
+          },
+          {
+            "sent_idx": 3,
+            "yhat": 0.5768,
+            "y_true": 0.5538,
+            "text": "In the first paragraph of the petition it is stated \"This is an application for Review of the order dated 9.12..."
+          },
+          {
+            "sent_idx": 6,
+            "yhat": 0.5687,
+            "y_true": 0.3738,
+            "text": "In the second paragraph we are told that no detailed grounds have been taken (though in point of fact not a si..."
+          }
+        ],
+        "overlap": [
+          3,
+          11
+        ],
+        "only_in_true": [
+          1
+        ],
+        "only_in_pred": [
+          6
+        ],
+        "jaccard": 0.5,
+        "pct_recall": 0.6667
+      },
+      "C3": {
+        "true_topk": [
+          {
+            "sent_idx": 3,
+            "y": 0.5538,
+            "text": "In the first paragraph of the petition it is stated \"This is an application for Review of the order dated 9.12..."
+          },
+          {
+            "sent_idx": 1,
+            "y": 0.5161,
+            "text": "In Special Leave Petition (C) No. 13618 of 1983 CHAMBER MATTER By Circulation The order of the Court was deliv..."
+          },
+          {
+            "sent_idx": 11,
+            "y": 0.4884,
+            "text": "We must however express our deep dissatisfaction and anguish with the indiscriminate manner in which petitions..."
+          }
+        ],
+        "pred_topk": [
+          {
+            "sent_idx": 3,
+            "yhat": 0.5316,
+            "y_true": 0.5538,
+            "text": "In the first paragraph of the petition it is stated \"This is an application for Review of the order dated 9.12..."
+          },
+          {
+            "sent_idx": 11,
+            "yhat": 0.5049,
+            "y_true": 0.4884,
+            "text": "We must however express our deep dissatisfaction and anguish with the indiscriminate manner in which petitions..."
+          },
+          {
+            "sent_idx": 4,
+            "yhat": 0.4937,
+            "y_true": 0.4,
+            "text": "The said order discloses an error apparent on the face of the record as will be clear from perusal of the vari..."
+          }
+        ],
+        "overlap": [
+          3,
+          11
+        ],
+        "only_in_true": [
+          1
+        ],
+        "only_in_pred": [
+          4
+        ],
+        "jaccard": 0.5,
+        "pct_recall": 0.6667
+      }
+    },
+    {
+      "label": "AVERAGE",
+      "doc_id": "1005",
+      "M_i": 83,
+      "k_i": 4,
+      "ki_formula": "max(3, round(0.05 * 83)) = max(3, round(4.1500)) = max(3, 4) = 4",
+      "C1": {
+        "true_topk": [
+          {
+            "sent_idx": 59,
+            "y": 0.8627,
+            "text": "There is nothing in the provisions of article 366(22) which requires a court to recognise such a person as a R..."
+          },
+          {
+            "sent_idx": 61,
+            "y": 0.7945,
+            "text": "As the appellant was an 'ex Ruler ', he was within the class of persons who were by name specifically included..."
+          },
+          {
+            "sent_idx": 66,
+            "y": 0.7018,
+            "text": "A maufidar could be a person who was the holder of land which was exempted from the payment of rent or tax."
+          },
+          {
+            "sent_idx": 10,
+            "y": 0.6667,
+            "text": "The appellant was the Ruler of the State of Baster."
+          }
+        ],
+        "pred_topk": [
+          {
+            "sent_idx": 79,
+            "yhat": 0.5854,
+            "y_true": 0.4308,
+            "text": "Since it was a question of fact whether the villages had been assessed to land revenue, which was denied on be..."
+          },
+          {
+            "sent_idx": 70,
+            "yhat": 0.5506,
+            "y_true": 0.3371,
+            "text": "In the petition under articles 226 and 227 of the Constitution, filed by the appellant in the High Court, it w..."
+          },
+          {
+            "sent_idx": 80,
+            "yhat": 0.5468,
+            "y_true": 0.4124,
+            "text": "As for the other villages, in Schedules A and B of the petition of the appellant under articles 226 and 227 of..."
+          },
+          {
+            "sent_idx": 68,
+            "yhat": 0.5394,
+            "y_true": 0.3689,
+            "text": "It is, however, contended on behalf of the appellant that the most important part of the definition was the co..."
+          }
+        ],
+        "overlap": [],
+        "only_in_true": [
+          10,
+          59,
+          61,
+          66
+        ],
+        "only_in_pred": [
+          68,
+          70,
+          79,
+          80
+        ],
+        "jaccard": 0.0,
+        "pct_recall": 0.0
+      },
+      "C3": {
+        "true_topk": [
+          {
+            "sent_idx": 59,
+            "y": 0.8627,
+            "text": "There is nothing in the provisions of article 366(22) which requires a court to recognise such a person as a R..."
+          },
+          {
+            "sent_idx": 61,
+            "y": 0.7945,
+            "text": "As the appellant was an 'ex Ruler ', he was within the class of persons who were by name specifically included..."
+          },
+          {
+            "sent_idx": 66,
+            "y": 0.7018,
+            "text": "A maufidar could be a person who was the holder of land which was exempted from the payment of rent or tax."
+          },
+          {
+            "sent_idx": 10,
+            "y": 0.6667,
+            "text": "The appellant was the Ruler of the State of Baster."
+          }
+        ],
+        "pred_topk": [
+          {
+            "sent_idx": 79,
+            "yhat": 0.5452,
+            "y_true": 0.4308,
+            "text": "Since it was a question of fact whether the villages had been assessed to land revenue, which was denied on be..."
+          },
+          {
+            "sent_idx": 69,
+            "yhat": 0.5167,
+            "y_true": 0.3059,
+            "text": "It was contended that even if the appellant was a maufidar, there was nothing to show that with reference to a..."
+          },
+          {
+            "sent_idx": 74,
+            "yhat": 0.5164,
+            "y_true": 0.3704,
+            "text": "There is thus no material on the record to establish that the appellant as a maufidar had no right to recover ..."
+          },
+          {
+            "sent_idx": 70,
+            "yhat": 0.513,
+            "y_true": 0.3371,
+            "text": "In the petition under articles 226 and 227 of the Constitution, filed by the appellant in the High Court, it w..."
+          }
+        ],
+        "overlap": [],
+        "only_in_true": [
+          10,
+          59,
+          61,
+          66
+        ],
+        "only_in_pred": [
+          69,
+          70,
+          74,
+          79
+        ],
+        "jaccard": 0.0,
+        "pct_recall": 0.0
+      }
+    },
+    {
+      "label": "LONG",
+      "doc_id": "6778",
+      "M_i": 1189,
+      "k_i": 59,
+      "ki_formula": "max(3, round(0.05 * 1189)) = max(3, round(59.4500)) = max(3, 59) = 59",
+      "C1": {
+        "true_topk": [
+          {
+            "sent_idx": 262,
+            "y": 1.0,
+            "text": "Clause (c) states that in the case of any other person the sanction would be of the authority competent to rem..."
+          },
+          {
+            "sent_idx": 519,
+            "y": 1.0,
+            "text": "Any complaint against a Judge and its investigation by the CBI, if given publicity will have a far reaching im..."
+          },
+          {
+            "sent_idx": 518,
+            "y": 1.0,
+            "text": "But these safeguards may not be adequate."
+          },
+          {
+            "sent_idx": 522,
+            "y": 1.0,
+            "text": "They should be protected."
+          },
+          {
+            "sent_idx": 651,
+            "y": 1.0,
+            "text": "The Investigating Officer is only required to collect material to find out whether the offence alleged appears..."
+          },
+          {
+            "sent_idx": 530,
+            "y": 1.0,
+            "text": "All that is required is to lay down certain guidelines lest the Act may be misused."
+          },
+          {
+            "sent_idx": 277,
+            "y": 1.0,
+            "text": "Indeed, they are not Judges if they allow themselves to be guided by the Government in the performance of thei..."
+          },
+          {
+            "sent_idx": 535,
+            "y": 1.0,
+            "text": "Indeed, the court 's role today is much more."
+          },
+          {
+            "sent_idx": 536,
+            "y": 1.0,
+            "text": "It is expanding beyond dispute settling and interstitial law making."
+          },
+          {
+            "sent_idx": 284,
+            "y": 1.0,
+            "text": "The 'general word is presumed to be restricted to the same genus as those of the particular and specific words..."
+          },
+          {
+            "sent_idx": 1181,
+            "y": 1.0,
+            "text": "If this was the expectation of the framers of the Constitution and their vision of the moral fibre in the high..."
+          },
+          {
+            "sent_idx": 1052,
+            "y": 1.0,
+            "text": "Such a law in the form of the and the rules framed thereunder has been enacted."
+          },
+          {
+            "sent_idx": 415,
+            "y": 1.0,
+            "text": "It will not have the consequence of removing the Judge from the office unless it is followed by an order of th..."
+          },
+          {
+            "sent_idx": 1056,
+            "y": 1.0,
+            "text": "The need for these special provisions is a clear pointer in the direction of inapplicability to them of the ge..."
+          },
+          {
+            "sent_idx": 681,
+            "y": 1.0,
+            "text": "The standards of judicial behaviour, both on and off the Bench, are normally extremely high."
+          },
+          {
+            "sent_idx": 682,
+            "y": 1.0,
+            "text": "For a Judge to deviate from such standards of honesty and impar tiality is to betray the trust reposed on him."
+          },
+          {
+            "sent_idx": 427,
+            "y": 1.0,
+            "text": "The order of the President is sine qua non for removal of a Judge."
+          },
+          {
+            "sent_idx": 428,
+            "y": 1.0,
+            "text": "The President alone could make that order."
+          },
+          {
+            "sent_idx": 684,
+            "y": 1.0,
+            "text": "From the standpoint of justice the size of the bribe or scope of corruption cannot be the scale for measuring ..."
+          },
+          {
+            "sent_idx": 683,
+            "y": 1.0,
+            "text": "No excuse or no legal relativity can condone such betrayal."
+          },
+          {
+            "sent_idx": 687,
+            "y": 1.0,
+            "text": "The slightest hint of irregu larity or impropriety in the Court is a cause for great anxiety and alarm."
+          },
+          {
+            "sent_idx": 447,
+            "y": 1.0,
+            "text": "The President is not an outsider so far judiciary is concerned."
+          },
+          {
+            "sent_idx": 1089,
+            "y": 1.0,
+            "text": "The Constitution, while providing that their position would be akin to that of a Judge of the Supreme Court, c..."
+          },
+          {
+            "sent_idx": 324,
+            "y": 1.0,
+            "text": "It is a general term and general term in the Act should not be narrowly construed."
+          },
+          {
+            "sent_idx": 326,
+            "y": 1.0,
+            "text": "There is no such indication to the contrary in the Act."
+          },
+          {
+            "sent_idx": 1102,
+            "y": 1.0,
+            "text": "The clear legislative intent is that the enactment applies only to those in whose case sanction of this kind i..."
+          },
+          {
+            "sent_idx": 336,
+            "y": 1.0,
+            "text": "The Executive is competent to appoint the Judges but not empowered to remove them."
+          },
+          {
+            "sent_idx": 732,
+            "y": 1.0,
+            "text": "So far this aspect is concerned, the two categories of Judges High Court and Supreme Court Judges on the one h..."
+          },
+          {
+            "sent_idx": 477,
+            "y": 1.0,
+            "text": "One is the power of Parliament and the other is the jurisdiction of a Criminal Court."
+          },
+          {
+            "sent_idx": 478,
+            "y": 1.0,
+            "text": "Both are mutually exclusive."
+          },
+          {
+            "sent_idx": 740,
+            "y": 1.0,
+            "text": "He cannot be convicted and pun ished."
+          },
+          {
+            "sent_idx": 625,
+            "y": 1.0,
+            "text": "(Section 106 of the Evidence Act)."
+          },
+          {
+            "sent_idx": 627,
+            "y": 1.0,
+            "text": "It is for him to explain."
+          },
+          {
+            "sent_idx": 247,
+            "y": 1.0,
+            "text": "The competent authority may refuse sanction for prosecution if the offence alleged has no material to support ..."
+          },
+          {
+            "sent_idx": 764,
+            "y": 1.0,
+            "text": "This will seriously jeopardise the independence of judiciary which is undoubtedly a basic feature of the Const..."
+          },
+          {
+            "sent_idx": 710,
+            "y": 0.9863,
+            "text": "Thus although more than one person are involved in the process, it is not permissible to say that no authority..."
+          },
+          {
+            "sent_idx": 1110,
+            "y": 0.9841,
+            "text": "In fact, the very need to read the proposed guidelines in the exist ing law by implication is a clear indicati..."
+          },
+          {
+            "sent_idx": 454,
+            "y": 0.9778,
+            "text": "Parliament has no part to play in the matter of appointment of Judges except that the Executive is responsible..."
+          },
+          {
+            "sent_idx": 482,
+            "y": 0.9737,
+            "text": "It is not objectionable to initiate criminal proceedings against public servant before exhausting the discipli..."
+          },
+          {
+            "sent_idx": 1108,
+            "y": 0.973,
+            "text": "The remedy is not to extend the existing law and make it workable by reading into it certain guidelines for wh..."
+          },
+          {
+            "sent_idx": 550,
+            "y": 0.9697,
+            "text": "If the Chief Justice of India himself is the person against whom the allegations of criminal misconduct are re..."
+          },
+          {
+            "sent_idx": 1017,
+            "y": 0.967,
+            "text": "Where no such relation ship exists in the absence of any vertical hierarchy and the holder of the public offic..."
+          },
+          {
+            "sent_idx": 1111,
+            "y": 0.9667,
+            "text": "Making the law applicable with the aid of the suggested guidelines, is not in the domain of judicial craftmans..."
+          },
+          {
+            "sent_idx": 408,
+            "y": 0.9663,
+            "text": "If the literal meaning of the legislative language used would lead to results which would defeat the purpose o..."
+          },
+          {
+            "sent_idx": 1049,
+            "y": 0.963,
+            "text": "The special law envisaged by Article 124(5) for dealing with the misbehaviour of a Judge covers the field of '..."
+          },
+          {
+            "sent_idx": 631,
+            "y": 0.963,
+            "text": "The principle is applied in the absence of statutory provision to the contrary."
+          },
+          {
+            "sent_idx": 655,
+            "y": 0.96,
+            "text": "He should be taken into confidence if he is willing to cooperate."
+          },
+          {
+            "sent_idx": 731,
+            "y": 0.96,
+            "text": "Similarly protection is available to the High Court and Supreme Court Judges through the provisions of Article..."
+          },
+          {
+            "sent_idx": 1180,
+            "y": 0.9577,
+            "text": "It appears that for a rare aberrant at that level, unless he resigned when faced with such a situation, remova..."
+          },
+          {
+            "sent_idx": 1122,
+            "y": 0.9565,
+            "text": "The fact that the Parliament did not enact any other law even then for the investigation into allegations of c..."
+          },
+          {
+            "sent_idx": 551,
+            "y": 0.9451,
+            "text": "There shall be similar consul tation at the stage of examining the question of granting sanction for prosecuti..."
+          },
+          {
+            "sent_idx": 1051,
+            "y": 0.9429,
+            "text": "Thus, even for the procedure for investigation into any misbehaviour of a Judge as well as its proof, a law en..."
+          },
+          {
+            "sent_idx": 413,
+            "y": 0.9429,
+            "text": "The expression \"the authority competent to remove\" used in clause (c) of Section 6(1) is to be construed to me..."
+          },
+          {
+            "sent_idx": 763,
+            "y": 0.9429,
+            "text": "If the President is held to be the appropriate authority to grant the sanction without reference to the Parlia..."
+          },
+          {
+            "sent_idx": 686,
+            "y": 0.9412,
+            "text": "A judicial scandal has always been regarded as far more deplorable than a scandal involving either the Executi..."
+          },
+          {
+            "sent_idx": 1081,
+            "y": 0.9412,
+            "text": "If the Act is applicable to Judges of the High Courts and the Supreme Court, it is obvious that the same must ..."
+          },
+          {
+            "sent_idx": 1096,
+            "y": 0.9412,
+            "text": "The ambit of the enactment is to be determined on the basis of the public office held by the public serv ant, ..."
+          },
+          {
+            "sent_idx": 849,
+            "y": 0.9412,
+            "text": "There is no material to indicate that corruption in judiciary was a mischief to be cured when the Prevention o..."
+          },
+          {
+            "sent_idx": 753,
+            "y": 0.9412,
+            "text": "If the legislature had intended to exclude the High Court and Supreme Court Judges from the field of Section 5..."
+          }
+        ],
+        "pred_topk": [
+          {
+            "sent_idx": 1099,
+            "yhat": 0.5367,
+            "y_true": 0.6931,
+            "text": "It is for the purpose of construing the provisions of the enactment and determining the scope and ambit thereo..."
+          },
+          {
+            "sent_idx": 15,
+            "yhat": 0.5304,
+            "y_true": 0.4844,
+            "text": "Section 6(1)(c) specifically enjoins that no court shall take cognizance of an offence punishable under Sectio..."
+          },
+          {
+            "sent_idx": 1184,
+            "yhat": 0.529,
+            "y_true": 0.9219,
+            "text": "If it is considered that the situation has altered requiring scrutiny of the conduct of even Judges at the hig..."
+          },
+          {
+            "sent_idx": 952,
+            "yhat": 0.525,
+            "y_true": 0.5191,
+            "text": "In other words, the argument is that not withstanding the fact that no sanction was required for prosecution o..."
+          },
+          {
+            "sent_idx": 981,
+            "yhat": 0.5216,
+            "y_true": 0.4483,
+            "text": "And this interrelation clearly provides a clue to the understanding of the provision in Section 6 providing fo..."
+          },
+          {
+            "sent_idx": 951,
+            "yhat": 0.5197,
+            "y_true": 0.5175,
+            "text": "It was, however, contended that for the purpose of deciding the question of applicability of the Act to the ap..."
+          },
+          {
+            "sent_idx": 1113,
+            "yhat": 0.519,
+            "y_true": 0.4667,
+            "text": "A charge of corruption against a superior Judge amounting to criminal misconduct by abuse of his office would ..."
+          },
+          {
+            "sent_idx": 1185,
+            "yhat": 0.5175,
+            "y_true": 0.9204,
+            "text": "Any attempt to bring the Judges of the High Courts and the Supreme Court within the purview of the Prevention ..."
+          },
+          {
+            "sent_idx": 1076,
+            "yhat": 0.5123,
+            "y_true": 0.9171,
+            "text": "These words in clause (e) have to be given some meaning which would place the burden on the prosecution, howso..."
+          },
+          {
+            "sent_idx": 1092,
+            "yhat": 0.5098,
+            "y_true": 0.4425,
+            "text": "It was also suggested at the hearing that the absence of need of sanction for prosecution under Section 6 of t..."
+          },
+          {
+            "sent_idx": 1078,
+            "yhat": 0.5074,
+            "y_true": 0.8873,
+            "text": "In the case of such public servants whenever sanction to prosecute is sought under Section 6 of the Act, the c..."
+          },
+          {
+            "sent_idx": 1057,
+            "yhat": 0.5073,
+            "y_true": 0.8485,
+            "text": "Construction of Section 6(1)(c) of the Act as suggested by the learned Solicitor General by treating the Presi..."
+          },
+          {
+            "sent_idx": 1132,
+            "yhat": 0.5071,
+            "y_true": 0.48,
+            "text": "The collec tive wisdom of the constitutional functionaries involved in the process of appointing a superior Ju..."
+          },
+          {
+            "sent_idx": 1070,
+            "yhat": 0.5071,
+            "y_true": 0.8493,
+            "text": "The fact remains that while according sanction to prosecute under Section 6 of the Act, the competent authorit..."
+          },
+          {
+            "sent_idx": 16,
+            "yhat": 0.5069,
+            "y_true": 0.8211,
+            "text": "So to initiate a proceeding against a Judge of a Supreme Court for criminal misconduct failing under Section 5..."
+          },
+          {
+            "sent_idx": 52,
+            "yhat": 0.5048,
+            "y_true": 0.5376,
+            "text": "The third most crucial question that fails for consider ation in this case is who is the competent authority t..."
+          },
+          {
+            "sent_idx": 1137,
+            "yhat": 0.5045,
+            "y_true": 0.3415,
+            "text": "It is, therefore, time that all the constitutional functionaries involved in the process of appointment of sup..."
+          },
+          {
+            "sent_idx": 1025,
+            "yhat": 0.5044,
+            "y_true": 0.3158,
+            "text": "\"Therefore, the important question that arises in such cases of suspect ed misbehaviour and/or reported lack o..."
+          },
+          {
+            "sent_idx": 1176,
+            "yhat": 0.5041,
+            "y_true": 0.3613,
+            "text": "With this duty entrusted to the higher judiciary, it was natural to expect that the higher judiciary would not..."
+          },
+          {
+            "sent_idx": 73,
+            "yhat": 0.5039,
+            "y_true": 0.5301,
+            "text": "In these circumstances the only question to be consid ered is who will be the authority or who is the authorit..."
+          },
+          {
+            "sent_idx": 1059,
+            "yhat": 0.5036,
+            "y_true": 0.7105,
+            "text": "This is more so, since the rejection of such an argument would not in any manner jeopardise the provisions of ..."
+          },
+          {
+            "sent_idx": 954,
+            "yhat": 0.5026,
+            "y_true": 0.5287,
+            "text": "The question of grant of sanction under Section 6 for the prosecution of a Judge or Chief Justice of a High Co..."
+          },
+          {
+            "sent_idx": 955,
+            "yhat": 0.5026,
+            "y_true": 0.5484,
+            "text": "Clauses (a), (b) and (c) in Sub section (1) of Section 6 exhaus 286 tively provide for the competent authority..."
+          },
+          {
+            "sent_idx": 1125,
+            "yhat": 0.5021,
+            "y_true": 0.4167,
+            "text": "Maybe, need is now felt for a law providing for trial and punishment of a superior Judge who is charged with t..."
+          },
+          {
+            "sent_idx": 987,
+            "yhat": 0.5017,
+            "y_true": 0.4,
+            "text": "That authority alone would be competent to judge whether on the facts alleged, there has been an abuse or misu..."
+          },
+          {
+            "sent_idx": 761,
+            "yhat": 0.5007,
+            "y_true": 0.427,
+            "text": "Before proceeding further 1 would again state that having answered the question as to whether a Judge of the s..."
+          },
+          {
+            "sent_idx": 984,
+            "yhat": 0.4999,
+            "y_true": 0.3855,
+            "text": "A grant of sanction is not an idle formality but a solemn and sacrosanct act which removes the umbrella of pro..."
+          },
+          {
+            "sent_idx": 995,
+            "yhat": 0.4996,
+            "y_true": 0.4969,
+            "text": "It would follow that where the office held by the public servant is not a part of a verti cal hierarchy in whi..."
+          },
+          {
+            "sent_idx": 1144,
+            "yhat": 0.4995,
+            "y_true": 0.3956,
+            "text": "It was expected that the superior Judges who were constituted into a different class and created as superior m..."
+          },
+          {
+            "sent_idx": 1065,
+            "yhat": 0.499,
+            "y_true": 0.7529,
+            "text": "These are strong reasons to hold that Section 6(1)(c) of the Act is inappliable to a Judge of a High Court or ..."
+          },
+          {
+            "sent_idx": 1066,
+            "yhat": 0.4985,
+            "y_true": 0.8052,
+            "text": "An additional reason 'indicating inapplicability of the Act is the practical difficulty in applying criminal m..."
+          },
+          {
+            "sent_idx": 1129,
+            "yhat": 0.4985,
+            "y_true": 0.4167,
+            "text": "The framers of the Constitution had visualised that the constitutional scheme for appointment of the superior ..."
+          },
+          {
+            "sent_idx": 1023,
+            "yhat": 0.4982,
+            "y_true": 0.3881,
+            "text": "In my view since the question relates to the continuance of a high constitutional functionary like the Additio..."
+          },
+          {
+            "sent_idx": 996,
+            "yhat": 0.497,
+            "y_true": 0.825,
+            "text": "The decisions of this Court have unequivocally held that a Judge or Chief Justice of a High Court is a constit..."
+          },
+          {
+            "sent_idx": 1094,
+            "yhat": 0.4964,
+            "y_true": 0.9195,
+            "text": "The need for sanction under Section 6 for prosecution of the holder of a public office indicates the ambit and..."
+          },
+          {
+            "sent_idx": 1048,
+            "yhat": 0.4953,
+            "y_true": 0.8632,
+            "text": "There can be no doubt that the expression 'misbehaviour ' is of wide import and includes within its ambit crim..."
+          },
+          {
+            "sent_idx": 838,
+            "yhat": 0.4941,
+            "y_true": 0.4615,
+            "text": "It was argued that in this manner preservation of independence of the judiciary could be ensured while treat i..."
+          },
+          {
+            "sent_idx": 1151,
+            "yhat": 0.4933,
+            "y_true": 0.9306,
+            "text": "The view that Judges of the High Courts and the Supreme Court are outside the purview of the Prevention of Cor..."
+          },
+          {
+            "sent_idx": 700,
+            "yhat": 0.4933,
+            "y_true": 0.5,
+            "text": "For the purpose of this argument it is presumed that there is no authority competent to remove a High Court Ju..."
+          },
+          {
+            "sent_idx": 1096,
+            "yhat": 0.4931,
+            "y_true": 0.9412,
+            "text": "The ambit of the enactment is to be determined on the basis of the public office held by the public serv ant, ..."
+          },
+          {
+            "sent_idx": 14,
+            "yhat": 0.4915,
+            "y_true": 0.7387,
+            "text": "Therefore, it is clear that a Judge will be liable for committing criminal misconduct within the meaning of cl..."
+          },
+          {
+            "sent_idx": 71,
+            "yhat": 0.4903,
+            "y_true": 0.8571,
+            "text": "Therefore a Judge of the High Court or of the Supreme Court comes within the defini tion of public servant and..."
+          },
+          {
+            "sent_idx": 1010,
+            "yhat": 0.4896,
+            "y_true": 0.44,
+            "text": "Since the order of removal in such a case is to be made by the President, the learned Solicitor General conten..."
+          },
+          {
+            "sent_idx": 1118,
+            "yhat": 0.4893,
+            "y_true": 0.4754,
+            "text": "It appears that the framers of the Constitution did not contem plate the need for prosecution of a Judge at th..."
+          },
+          {
+            "sent_idx": 982,
+            "yhat": 0.489,
+            "y_true": 0.5051,
+            "text": "Therefore, it unquestionably follows that the sanction to prosecute can be given by an authority competent to ..."
+          },
+          {
+            "sent_idx": 1080,
+            "yhat": 0.4877,
+            "y_true": 0.75,
+            "text": "It does appear that this too is a pointer in the direction that even after the 1964 amendment of the Act follo..."
+          },
+          {
+            "sent_idx": 1034,
+            "yhat": 0.4875,
+            "y_true": 0.4255,
+            "text": "As the law now stands it is not open to any single individual, whether it is the President or the Chief Justic..."
+          },
+          {
+            "sent_idx": 1013,
+            "yhat": 0.4872,
+            "y_true": 0.8923,
+            "text": "Section 6(1)(c) speaks of 'authority competent to remove ' which plainly indicates the substantive competence ..."
+          },
+          {
+            "sent_idx": 68,
+            "yhat": 0.487,
+            "y_true": 0.5556,
+            "text": "It has been, therefore, urged that Section 6(i)(C) of the Prevention of Corruption Act, 1947 is not applicable..."
+          },
+          {
+            "sent_idx": 1060,
+            "yhat": 0.4869,
+            "y_true": 0.4146,
+            "text": "It can also not be overlooked that the Santhanam Commit tee Report did not consider the judiciary within its p..."
+          },
+          {
+            "sent_idx": 1042,
+            "yhat": 0.4863,
+            "y_true": 0.4304,
+            "text": "The scheme of the exist ing law to deal with such situations was considered at length and it was also held tha..."
+          },
+          {
+            "sent_idx": 994,
+            "yhat": 0.4861,
+            "y_true": 0.4242,
+            "text": "In other words, Section 6 applies only in cases where there is a vertical hierarchy of public offices and the ..."
+          },
+          {
+            "sent_idx": 103,
+            "yhat": 0.4858,
+            "y_true": 0.7363,
+            "text": "The President, therefore, being the authority competent to appoint and to remove a Judge, of course in accorda..."
+          },
+          {
+            "sent_idx": 1097,
+            "yhat": 0.4854,
+            "y_true": 0.9402,
+            "text": "In other words, if the holder of a public office during his tenure in office cannot be prosecuted without sanc..."
+          },
+          {
+            "sent_idx": 958,
+            "yhat": 0.484,
+            "y_true": 0.8667,
+            "text": "It follows that the holder of an office, even though a 'public servant ' accord ing to the definition in the A..."
+          },
+          {
+            "sent_idx": 1180,
+            "yhat": 0.4837,
+            "y_true": 0.9577,
+            "text": "It appears that for a rare aberrant at that level, unless he resigned when faced with such a situation, remova..."
+          },
+          {
+            "sent_idx": 979,
+            "yhat": 0.483,
+            "y_true": 0.466,
+            "text": "The expression 'office ' in the three sub clauses of Section 6(1) would clear ly denote that office which the ..."
+          },
+          {
+            "sent_idx": 1183,
+            "yhat": 0.4829,
+            "y_true": 0.931,
+            "text": "Clearly, it was expected that the higher judiciary whose word would be final in the interpretation of all laws..."
+          },
+          {
+            "sent_idx": 975,
+            "yhat": 0.4824,
+            "y_true": 0.475,
+            "text": "The offence would be committed by the public servant by misusing or abusing the power of office and it is from..."
+          }
+        ],
+        "overlap": [
+          1096,
+          1180
+        ],
+        "only_in_true": [
+          247,
+          262,
+          277,
+          284,
+          324,
+          326,
+          336,
+          408,
+          413,
+          415,
+          427,
+          428,
+          447,
+          454,
+          477,
+          478,
+          482,
+          518,
+          519,
+          522,
+          530,
+          535,
+          536,
+          550,
+          551,
+          625,
+          627,
+          631,
+          651,
+          655,
+          681,
+          682,
+          683,
+          684,
+          686,
+          687,
+          710,
+          731,
+          732,
+          740,
+          753,
+          763,
+          764,
+          849,
+          1017,
+          1049,
+          1051,
+          1052,
+          1056,
+          1081,
+          1089,
+          1102,
+          1108,
+          1110,
+          1111,
+          1122,
+          1181
+        ],
+        "only_in_pred": [
+          14,
+          15,
+          16,
+          52,
+          68,
+          71,
+          73,
+          103,
+          700,
+          761,
+          838,
+          951,
+          952,
+          954,
+          955,
+          958,
+          975,
+          979,
+          981,
+          982,
+          984,
+          987,
+          994,
+          995,
+          996,
+          1010,
+          1013,
+          1023,
+          1025,
+          1034,
+          1042,
+          1048,
+          1057,
+          1059,
+          1060,
+          1065,
+          1066,
+          1070,
+          1076,
+          1078,
+          1080,
+          1092,
+          1094,
+          1097,
+          1099,
+          1113,
+          1118,
+          1125,
+          1129,
+          1132,
+          1137,
+          1144,
+          1151,
+          1176,
+          1183,
+          1184,
+          1185
+        ],
+        "jaccard": 0.0172,
+        "pct_recall": 0.0339
+      },
+      "C3": {
+        "true_topk": [
+          {
+            "sent_idx": 262,
+            "y": 1.0,
+            "text": "Clause (c) states that in the case of any other person the sanction would be of the authority competent to rem..."
+          },
+          {
+            "sent_idx": 519,
+            "y": 1.0,
+            "text": "Any complaint against a Judge and its investigation by the CBI, if given publicity will have a far reaching im..."
+          },
+          {
+            "sent_idx": 518,
+            "y": 1.0,
+            "text": "But these safeguards may not be adequate."
+          },
+          {
+            "sent_idx": 522,
+            "y": 1.0,
+            "text": "They should be protected."
+          },
+          {
+            "sent_idx": 651,
+            "y": 1.0,
+            "text": "The Investigating Officer is only required to collect material to find out whether the offence alleged appears..."
+          },
+          {
+            "sent_idx": 530,
+            "y": 1.0,
+            "text": "All that is required is to lay down certain guidelines lest the Act may be misused."
+          },
+          {
+            "sent_idx": 277,
+            "y": 1.0,
+            "text": "Indeed, they are not Judges if they allow themselves to be guided by the Government in the performance of thei..."
+          },
+          {
+            "sent_idx": 535,
+            "y": 1.0,
+            "text": "Indeed, the court 's role today is much more."
+          },
+          {
+            "sent_idx": 536,
+            "y": 1.0,
+            "text": "It is expanding beyond dispute settling and interstitial law making."
+          },
+          {
+            "sent_idx": 284,
+            "y": 1.0,
+            "text": "The 'general word is presumed to be restricted to the same genus as those of the particular and specific words..."
+          },
+          {
+            "sent_idx": 1181,
+            "y": 1.0,
+            "text": "If this was the expectation of the framers of the Constitution and their vision of the moral fibre in the high..."
+          },
+          {
+            "sent_idx": 1052,
+            "y": 1.0,
+            "text": "Such a law in the form of the and the rules framed thereunder has been enacted."
+          },
+          {
+            "sent_idx": 415,
+            "y": 1.0,
+            "text": "It will not have the consequence of removing the Judge from the office unless it is followed by an order of th..."
+          },
+          {
+            "sent_idx": 1056,
+            "y": 1.0,
+            "text": "The need for these special provisions is a clear pointer in the direction of inapplicability to them of the ge..."
+          },
+          {
+            "sent_idx": 681,
+            "y": 1.0,
+            "text": "The standards of judicial behaviour, both on and off the Bench, are normally extremely high."
+          },
+          {
+            "sent_idx": 682,
+            "y": 1.0,
+            "text": "For a Judge to deviate from such standards of honesty and impar tiality is to betray the trust reposed on him."
+          },
+          {
+            "sent_idx": 427,
+            "y": 1.0,
+            "text": "The order of the President is sine qua non for removal of a Judge."
+          },
+          {
+            "sent_idx": 428,
+            "y": 1.0,
+            "text": "The President alone could make that order."
+          },
+          {
+            "sent_idx": 684,
+            "y": 1.0,
+            "text": "From the standpoint of justice the size of the bribe or scope of corruption cannot be the scale for measuring ..."
+          },
+          {
+            "sent_idx": 683,
+            "y": 1.0,
+            "text": "No excuse or no legal relativity can condone such betrayal."
+          },
+          {
+            "sent_idx": 687,
+            "y": 1.0,
+            "text": "The slightest hint of irregu larity or impropriety in the Court is a cause for great anxiety and alarm."
+          },
+          {
+            "sent_idx": 447,
+            "y": 1.0,
+            "text": "The President is not an outsider so far judiciary is concerned."
+          },
+          {
+            "sent_idx": 1089,
+            "y": 1.0,
+            "text": "The Constitution, while providing that their position would be akin to that of a Judge of the Supreme Court, c..."
+          },
+          {
+            "sent_idx": 324,
+            "y": 1.0,
+            "text": "It is a general term and general term in the Act should not be narrowly construed."
+          },
+          {
+            "sent_idx": 326,
+            "y": 1.0,
+            "text": "There is no such indication to the contrary in the Act."
+          },
+          {
+            "sent_idx": 1102,
+            "y": 1.0,
+            "text": "The clear legislative intent is that the enactment applies only to those in whose case sanction of this kind i..."
+          },
+          {
+            "sent_idx": 336,
+            "y": 1.0,
+            "text": "The Executive is competent to appoint the Judges but not empowered to remove them."
+          },
+          {
+            "sent_idx": 732,
+            "y": 1.0,
+            "text": "So far this aspect is concerned, the two categories of Judges High Court and Supreme Court Judges on the one h..."
+          },
+          {
+            "sent_idx": 477,
+            "y": 1.0,
+            "text": "One is the power of Parliament and the other is the jurisdiction of a Criminal Court."
+          },
+          {
+            "sent_idx": 478,
+            "y": 1.0,
+            "text": "Both are mutually exclusive."
+          },
+          {
+            "sent_idx": 740,
+            "y": 1.0,
+            "text": "He cannot be convicted and pun ished."
+          },
+          {
+            "sent_idx": 625,
+            "y": 1.0,
+            "text": "(Section 106 of the Evidence Act)."
+          },
+          {
+            "sent_idx": 627,
+            "y": 1.0,
+            "text": "It is for him to explain."
+          },
+          {
+            "sent_idx": 247,
+            "y": 1.0,
+            "text": "The competent authority may refuse sanction for prosecution if the offence alleged has no material to support ..."
+          },
+          {
+            "sent_idx": 764,
+            "y": 1.0,
+            "text": "This will seriously jeopardise the independence of judiciary which is undoubtedly a basic feature of the Const..."
+          },
+          {
+            "sent_idx": 710,
+            "y": 0.9863,
+            "text": "Thus although more than one person are involved in the process, it is not permissible to say that no authority..."
+          },
+          {
+            "sent_idx": 1110,
+            "y": 0.9841,
+            "text": "In fact, the very need to read the proposed guidelines in the exist ing law by implication is a clear indicati..."
+          },
+          {
+            "sent_idx": 454,
+            "y": 0.9778,
+            "text": "Parliament has no part to play in the matter of appointment of Judges except that the Executive is responsible..."
+          },
+          {
+            "sent_idx": 482,
+            "y": 0.9737,
+            "text": "It is not objectionable to initiate criminal proceedings against public servant before exhausting the discipli..."
+          },
+          {
+            "sent_idx": 1108,
+            "y": 0.973,
+            "text": "The remedy is not to extend the existing law and make it workable by reading into it certain guidelines for wh..."
+          },
+          {
+            "sent_idx": 550,
+            "y": 0.9697,
+            "text": "If the Chief Justice of India himself is the person against whom the allegations of criminal misconduct are re..."
+          },
+          {
+            "sent_idx": 1017,
+            "y": 0.967,
+            "text": "Where no such relation ship exists in the absence of any vertical hierarchy and the holder of the public offic..."
+          },
+          {
+            "sent_idx": 1111,
+            "y": 0.9667,
+            "text": "Making the law applicable with the aid of the suggested guidelines, is not in the domain of judicial craftmans..."
+          },
+          {
+            "sent_idx": 408,
+            "y": 0.9663,
+            "text": "If the literal meaning of the legislative language used would lead to results which would defeat the purpose o..."
+          },
+          {
+            "sent_idx": 1049,
+            "y": 0.963,
+            "text": "The special law envisaged by Article 124(5) for dealing with the misbehaviour of a Judge covers the field of '..."
+          },
+          {
+            "sent_idx": 631,
+            "y": 0.963,
+            "text": "The principle is applied in the absence of statutory provision to the contrary."
+          },
+          {
+            "sent_idx": 655,
+            "y": 0.96,
+            "text": "He should be taken into confidence if he is willing to cooperate."
+          },
+          {
+            "sent_idx": 731,
+            "y": 0.96,
+            "text": "Similarly protection is available to the High Court and Supreme Court Judges through the provisions of Article..."
+          },
+          {
+            "sent_idx": 1180,
+            "y": 0.9577,
+            "text": "It appears that for a rare aberrant at that level, unless he resigned when faced with such a situation, remova..."
+          },
+          {
+            "sent_idx": 1122,
+            "y": 0.9565,
+            "text": "The fact that the Parliament did not enact any other law even then for the investigation into allegations of c..."
+          },
+          {
+            "sent_idx": 551,
+            "y": 0.9451,
+            "text": "There shall be similar consul tation at the stage of examining the question of granting sanction for prosecuti..."
+          },
+          {
+            "sent_idx": 1051,
+            "y": 0.9429,
+            "text": "Thus, even for the procedure for investigation into any misbehaviour of a Judge as well as its proof, a law en..."
+          },
+          {
+            "sent_idx": 413,
+            "y": 0.9429,
+            "text": "The expression \"the authority competent to remove\" used in clause (c) of Section 6(1) is to be construed to me..."
+          },
+          {
+            "sent_idx": 763,
+            "y": 0.9429,
+            "text": "If the President is held to be the appropriate authority to grant the sanction without reference to the Parlia..."
+          },
+          {
+            "sent_idx": 686,
+            "y": 0.9412,
+            "text": "A judicial scandal has always been regarded as far more deplorable than a scandal involving either the Executi..."
+          },
+          {
+            "sent_idx": 1081,
+            "y": 0.9412,
+            "text": "If the Act is applicable to Judges of the High Courts and the Supreme Court, it is obvious that the same must ..."
+          },
+          {
+            "sent_idx": 1096,
+            "y": 0.9412,
+            "text": "The ambit of the enactment is to be determined on the basis of the public office held by the public serv ant, ..."
+          },
+          {
+            "sent_idx": 849,
+            "y": 0.9412,
+            "text": "There is no material to indicate that corruption in judiciary was a mischief to be cured when the Prevention o..."
+          },
+          {
+            "sent_idx": 753,
+            "y": 0.9412,
+            "text": "If the legislature had intended to exclude the High Court and Supreme Court Judges from the field of Section 5..."
+          }
+        ],
+        "pred_topk": [
+          {
+            "sent_idx": 1184,
+            "yhat": 0.5889,
+            "y_true": 0.9219,
+            "text": "If it is considered that the situation has altered requiring scrutiny of the conduct of even Judges at the hig..."
+          },
+          {
+            "sent_idx": 1076,
+            "yhat": 0.5658,
+            "y_true": 0.9171,
+            "text": "These words in clause (e) have to be given some meaning which would place the burden on the prosecution, howso..."
+          },
+          {
+            "sent_idx": 1176,
+            "yhat": 0.5545,
+            "y_true": 0.3613,
+            "text": "With this duty entrusted to the higher judiciary, it was natural to expect that the higher judiciary would not..."
+          },
+          {
+            "sent_idx": 981,
+            "yhat": 0.5537,
+            "y_true": 0.4483,
+            "text": "And this interrelation clearly provides a clue to the understanding of the provision in Section 6 providing fo..."
+          },
+          {
+            "sent_idx": 1150,
+            "yhat": 0.5502,
+            "y_true": 0.4368,
+            "text": "It is for the Parliament to decide whether that stage has reached in the superior judiciary when legal sanctio..."
+          },
+          {
+            "sent_idx": 1070,
+            "yhat": 0.5496,
+            "y_true": 0.8493,
+            "text": "The fact remains that while according sanction to prosecute under Section 6 of the Act, the competent authorit..."
+          },
+          {
+            "sent_idx": 1041,
+            "yhat": 0.5488,
+            "y_true": 0.4082,
+            "text": "It was also pointed out that the object served in this manner was the greater public interest to preserve inde..."
+          },
+          {
+            "sent_idx": 1099,
+            "yhat": 0.5474,
+            "y_true": 0.6931,
+            "text": "It is for the purpose of construing the provisions of the enactment and determining the scope and ambit thereo..."
+          },
+          {
+            "sent_idx": 1075,
+            "yhat": 0.5455,
+            "y_true": 0.4354,
+            "text": "Prescribing the substantive offence by insertion of clause (e.) as a part of the same schem 297 of amendment a..."
+          },
+          {
+            "sent_idx": 955,
+            "yhat": 0.5433,
+            "y_true": 0.5484,
+            "text": "Clauses (a), (b) and (c) in Sub section (1) of Section 6 exhaus 286 tively provide for the competent authority..."
+          },
+          {
+            "sent_idx": 15,
+            "yhat": 0.543,
+            "y_true": 0.4844,
+            "text": "Section 6(1)(c) specifically enjoins that no court shall take cognizance of an offence punishable under Sectio..."
+          },
+          {
+            "sent_idx": 1078,
+            "yhat": 0.5365,
+            "y_true": 0.8873,
+            "text": "In the case of such public servants whenever sanction to prosecute is sought under Section 6 of the Act, the c..."
+          },
+          {
+            "sent_idx": 1025,
+            "yhat": 0.5337,
+            "y_true": 0.3158,
+            "text": "\"Therefore, the important question that arises in such cases of suspect ed misbehaviour and/or reported lack o..."
+          },
+          {
+            "sent_idx": 838,
+            "yhat": 0.5332,
+            "y_true": 0.4615,
+            "text": "It was argued that in this manner preservation of independence of the judiciary could be ensured while treat i..."
+          },
+          {
+            "sent_idx": 951,
+            "yhat": 0.5324,
+            "y_true": 0.5175,
+            "text": "It was, however, contended that for the purpose of deciding the question of applicability of the Act to the ap..."
+          },
+          {
+            "sent_idx": 1111,
+            "yhat": 0.5318,
+            "y_true": 0.9667,
+            "text": "Making the law applicable with the aid of the suggested guidelines, is not in the domain of judicial craftmans..."
+          },
+          {
+            "sent_idx": 1096,
+            "yhat": 0.5307,
+            "y_true": 0.9412,
+            "text": "The ambit of the enactment is to be determined on the basis of the public office held by the public serv ant, ..."
+          },
+          {
+            "sent_idx": 1132,
+            "yhat": 0.5286,
+            "y_true": 0.48,
+            "text": "The collec tive wisdom of the constitutional functionaries involved in the process of appointing a superior Ju..."
+          },
+          {
+            "sent_idx": 1051,
+            "yhat": 0.5284,
+            "y_true": 0.9429,
+            "text": "Thus, even for the procedure for investigation into any misbehaviour of a Judge as well as its proof, a law en..."
+          },
+          {
+            "sent_idx": 826,
+            "yhat": 0.5283,
+            "y_true": 0.5234,
+            "text": "His first contention is that the Judges of the High Courts and the Supreme Court are not within the purview of..."
+          },
+          {
+            "sent_idx": 953,
+            "yhat": 0.5278,
+            "y_true": 0.5577,
+            "text": "It is argued that if the grant of sanction under Section 6 of the Act for prosecution of the incumbent for the..."
+          },
+          {
+            "sent_idx": 1071,
+            "yhat": 0.5277,
+            "y_true": 0.8889,
+            "text": "As held in Antulay, the competent authority before granting sanction has to apply its mind and be satisfied ab..."
+          },
+          {
+            "sent_idx": 759,
+            "yhat": 0.5272,
+            "y_true": 0.4248,
+            "text": "I also fully appreciate that if the executive follows this rule strictly, a further protection from harassment..."
+          },
+          {
+            "sent_idx": 1092,
+            "yhat": 0.5268,
+            "y_true": 0.4425,
+            "text": "It was also suggested at the hearing that the absence of need of sanction for prosecution under Section 6 of t..."
+          },
+          {
+            "sent_idx": 1101,
+            "yhat": 0.5261,
+            "y_true": 0.9123,
+            "text": "The concept of sanction for prosecution by a superior is so inextricably woven into the fabric of the enactmen..."
+          },
+          {
+            "sent_idx": 1028,
+            "yhat": 0.5257,
+            "y_true": 0.3922,
+            "text": "Not to have a corrupt Judge or a Judge who has misbehaved is unquestionably in public inter est but at the sam..."
+          },
+          {
+            "sent_idx": 1045,
+            "yhat": 0.5247,
+            "y_true": 0.5789,
+            "text": "Clause (5) of Article 124 enables enactment of a special law by the Parliament to regulate the procedure for p..."
+          },
+          {
+            "sent_idx": 328,
+            "yhat": 0.5232,
+            "y_true": 0.5405,
+            "text": "He squarely falls within the purview of the Act provided the second requirement under clause (c) of Section 6(..."
+          },
+          {
+            "sent_idx": 1094,
+            "yhat": 0.5227,
+            "y_true": 0.9195,
+            "text": "The need for sanction under Section 6 for prosecution of the holder of a public office indicates the ambit and..."
+          },
+          {
+            "sent_idx": 1057,
+            "yhat": 0.5217,
+            "y_true": 0.8485,
+            "text": "Construction of Section 6(1)(c) of the Act as suggested by the learned Solicitor General by treating the Presi..."
+          },
+          {
+            "sent_idx": 1056,
+            "yhat": 0.5215,
+            "y_true": 1.0,
+            "text": "The need for these special provisions is a clear pointer in the direction of inapplicability to them of the ge..."
+          },
+          {
+            "sent_idx": 1050,
+            "yhat": 0.5214,
+            "y_true": 0.8312,
+            "text": "There is no escape from the conclusion that Article 124(5) is wide enough to include within its ambit every co..."
+          },
+          {
+            "sent_idx": 1113,
+            "yhat": 0.5211,
+            "y_true": 0.4667,
+            "text": "A charge of corruption against a superior Judge amounting to criminal misconduct by abuse of his office would ..."
+          },
+          {
+            "sent_idx": 827,
+            "yhat": 0.5208,
+            "y_true": 0.5068,
+            "text": "He argued that the special provisions in the Constitution of India relating to the Judges of the High Courts a..."
+          },
+          {
+            "sent_idx": 1169,
+            "yhat": 0.5206,
+            "y_true": 0.3689,
+            "text": "The duty and credit for maintaining this high tradition is on the Government in existence when the 'Constituti..."
+          },
+          {
+            "sent_idx": 1137,
+            "yhat": 0.5206,
+            "y_true": 0.3415,
+            "text": "It is, therefore, time that all the constitutional functionaries involved in the process of appointment of sup..."
+          },
+          {
+            "sent_idx": 1016,
+            "yhat": 0.5202,
+            "y_true": 0.8421,
+            "text": "Obviously, the competent sanctioning authority envisaged thereby is a vertical superior in the hierarchy havin..."
+          },
+          {
+            "sent_idx": 115,
+            "yhat": 0.5199,
+            "y_true": 0.4127,
+            "text": "Section 6 creates a bar to the court from taking cogni zance of offences therein enumerated except with the pr..."
+          },
+          {
+            "sent_idx": 52,
+            "yhat": 0.5197,
+            "y_true": 0.5376,
+            "text": "The third most crucial question that fails for consider ation in this case is who is the competent authority t..."
+          },
+          {
+            "sent_idx": 1125,
+            "yhat": 0.5196,
+            "y_true": 0.4167,
+            "text": "Maybe, need is now felt for a law providing for trial and punishment of a superior Judge who is charged with t..."
+          },
+          {
+            "sent_idx": 1102,
+            "yhat": 0.5188,
+            "y_true": 1.0,
+            "text": "The clear legislative intent is that the enactment applies only to those in whose case sanction of this kind i..."
+          },
+          {
+            "sent_idx": 982,
+            "yhat": 0.5183,
+            "y_true": 0.5051,
+            "text": "Therefore, it unquestionably follows that the sanction to prosecute can be given by an authority competent to ..."
+          },
+          {
+            "sent_idx": 956,
+            "yhat": 0.5163,
+            "y_true": 0.7838,
+            "text": "Admittedly, such previous sanction is a condition precedent for taking cognizance of an offence punishable und..."
+          },
+          {
+            "sent_idx": 1063,
+            "yhat": 0.5161,
+            "y_true": 0.475,
+            "text": "The decision in S.P. Gupta was rendered much later and while dealing with the situations arising out of allega..."
+          },
+          {
+            "sent_idx": 75,
+            "yhat": 0.5159,
+            "y_true": 0.5,
+            "text": "The has been enacted by Parliament to regulate 224 the procedure for the investigation and proof of the misbe ..."
+          },
+          {
+            "sent_idx": 1183,
+            "yhat": 0.5159,
+            "y_true": 0.931,
+            "text": "Clearly, it was expected that the higher judiciary whose word would be final in the interpretation of all laws..."
+          },
+          {
+            "sent_idx": 1115,
+            "yhat": 0.5155,
+            "y_true": 0.4872,
+            "text": "There is no escape from the conclusion that the gross misbehaviour of corruption of a Judge must undoubtedly f..."
+          },
+          {
+            "sent_idx": 1072,
+            "yhat": 0.5146,
+            "y_true": 0.9114,
+            "text": "In order to form an objective opin ion, the competent authority must undoubtedly have before it the version of..."
+          },
+          {
+            "sent_idx": 1034,
+            "yhat": 0.5142,
+            "y_true": 0.4255,
+            "text": "As the law now stands it is not open to any single individual, whether it is the President or the Chief Justic..."
+          },
+          {
+            "sent_idx": 1136,
+            "yhat": 0.514,
+            "y_true": 0.3939,
+            "text": "The need for such legislation now would, therefore, not be entirely on account of the absence of it so far, bu..."
+          },
+          {
+            "sent_idx": 1010,
+            "yhat": 0.5137,
+            "y_true": 0.44,
+            "text": "Since the order of removal in such a case is to be made by the President, the learned Solicitor General conten..."
+          },
+          {
+            "sent_idx": 16,
+            "yhat": 0.5113,
+            "y_true": 0.8211,
+            "text": "So to initiate a proceeding against a Judge of a Supreme Court for criminal misconduct failing under Section 5..."
+          },
+          {
+            "sent_idx": 963,
+            "yhat": 0.5112,
+            "y_true": 0.4427,
+            "text": "This appears to be the obvious conclusion even for a case like the present where no such sanction for prosecut..."
+          },
+          {
+            "sent_idx": 1013,
+            "yhat": 0.5111,
+            "y_true": 0.8923,
+            "text": "Section 6(1)(c) speaks of 'authority competent to remove ' which plainly indicates the substantive competence ..."
+          },
+          {
+            "sent_idx": 991,
+            "yhat": 0.511,
+            "y_true": 0.4615,
+            "text": "That is why the Legislature clearly provided that that authority alone would be competent to grant sanction wh..."
+          },
+          {
+            "sent_idx": 1107,
+            "yhat": 0.5109,
+            "y_true": 0.8217,
+            "text": "If there is now a felt need to provide for such a situation, the remedy lies in suitable parliamentary legisla..."
+          },
+          {
+            "sent_idx": 1047,
+            "yhat": 0.5108,
+            "y_true": 0.5312,
+            "text": "It is significant that clause (5) of Article 124 covers the field of 'investiga tion ' and 'proof ' of the 'mi..."
+          },
+          {
+            "sent_idx": 1134,
+            "yhat": 0.5106,
+            "y_true": 0.4,
+            "text": "If this scheme is found to be inadequate in the present context, it is also indicative of the failure of the c..."
+          },
+          {
+            "sent_idx": 699,
+            "yhat": 0.5104,
+            "y_true": 0.4054,
+            "text": "It has been urged that in view of this essential requirement it has to be held that the Act does not cover the..."
+          }
+        ],
+        "overlap": [
+          1051,
+          1056,
+          1096,
+          1102,
+          1111
+        ],
+        "only_in_true": [
+          247,
+          262,
+          277,
+          284,
+          324,
+          326,
+          336,
+          408,
+          413,
+          415,
+          427,
+          428,
+          447,
+          454,
+          477,
+          478,
+          482,
+          518,
+          519,
+          522,
+          530,
+          535,
+          536,
+          550,
+          551,
+          625,
+          627,
+          631,
+          651,
+          655,
+          681,
+          682,
+          683,
+          684,
+          686,
+          687,
+          710,
+          731,
+          732,
+          740,
+          753,
+          763,
+          764,
+          849,
+          1017,
+          1049,
+          1052,
+          1081,
+          1089,
+          1108,
+          1110,
+          1122,
+          1180,
+          1181
+        ],
+        "only_in_pred": [
+          15,
+          16,
+          52,
+          75,
+          115,
+          328,
+          699,
+          759,
+          826,
+          827,
+          838,
+          951,
+          953,
+          955,
+          956,
+          963,
+          981,
+          982,
+          991,
+          1010,
+          1013,
+          1016,
+          1025,
+          1028,
+          1034,
+          1041,
+          1045,
+          1047,
+          1050,
+          1057,
+          1063,
+          1070,
+          1071,
+          1072,
+          1075,
+          1076,
+          1078,
+          1092,
+          1094,
+          1099,
+          1101,
+          1107,
+          1113,
+          1115,
+          1125,
+          1132,
+          1134,
+          1136,
+          1137,
+          1150,
+          1169,
+          1176,
+          1183,
+          1184
+        ],
+        "jaccard": 0.0442,
+        "pct_recall": 0.0847
+      }
+    }
+  ],
+  "chance_baseline": {
+    "method": "200 random top-ki selections per val doc (uniform, no replacement), seed=777",
+    "jaccard_mean": 0.031132,
+    "recall_mean": 0.054269,
+    "ratio_c1_vs_chance": 2.361,
+    "ratio_c3_vs_chance": 2.056
+  },
+  "ki_audit": {
+    "formula": "k_i = max(3, round(0.05 * M_i))",
+    "rounding_mode": "Python round() \u2014 banker's rounding (round-half-to-even)",
+    "same_ki_both_sides_confirmed": true,
+    "n_val_docs": 1054,
+    "n_floor3_fires": 139,
+    "n_docs_mi_lt20": 4,
+    "min_mi": 14,
+    "ki_at_min_mi": 3,
+    "max_mi": 1189,
+    "ki_at_max_mi": 59,
+    "avg_ki": 7.15,
+    "median_ki": 5,
+    "short_doc_examples": [
+      {
+        "M_i": 1,
+        "raw_005": 0.05,
+        "after_round": 0,
+        "k_i": 3
+      },
+      {
+        "M_i": 5,
+        "raw_005": 0.25,
+        "after_round": 0,
+        "k_i": 3
+      },
+      {
+        "M_i": 10,
+        "raw_005": 0.5,
+        "after_round": 0,
+        "k_i": 3
+      },
+      {
+        "M_i": 15,
+        "raw_005": 0.75,
+        "after_round": 1,
+        "k_i": 3
+      },
+      {
+        "M_i": 19,
+        "raw_005": 0.95,
+        "after_round": 1,
+        "k_i": 3
+      },
+      {
+        "M_i": 20,
+        "raw_005": 1.0,
+        "after_round": 1,
+        "k_i": 3
+      },
+      {
+        "M_i": 21,
+        "raw_005": 1.05,
+        "after_round": 1,
+        "k_i": 3
+      },
+      {
+        "M_i": 60,
+        "raw_005": 3.0,
+        "after_round": 3,
+        "k_i": 3
+      }
+    ]
+  }
+}

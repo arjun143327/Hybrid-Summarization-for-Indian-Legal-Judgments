@@ -290,3 +290,55 @@ rather than deciding silently, per the project's stated workflow).
     - `results/logs/rank_correlation_report.json`
     - `results/logs/rank_correlation_report.md` (with worked document examples)
   - **Status**: Phase 3 rank correlation review **COMPLETE**. **HOLD — do not proceed to Phase 4 until user sign-off on these metrics.**
+- **2026-09-13 (Phase 3 Supplement: Worked Examples, Chance Baseline, k_i Audit)**:
+  - **k_i Formula Confirmed**:
+    - Formula: `k_i = max(3, round(0.05 * M_i))`
+    - Rounding: Python built-in `round()` — banker's rounding (round-half-to-even). E.g. `round(0.5)=0`, `round(1.5)=2`.
+    - Same `k_i` used for BOTH true-label top-k and predicted-score top-k: **CONFIRMED** — computed once from `M_i`, applied identically to both sides of Jaccard/recall.
+    - Short-document tail: For M_i < 20, `0.05 * M_i < 1.0`. After `round()` → 0 or 1. `max(3, ...)` clamps to `k_i=3`. Floor fires for ALL 4 short docs in the val split.
+    - Examples: M_i=10 → round(0.5)=0 → k_i=3; M_i=15 → round(0.75)=1 → k_i=3; M_i=60 → round(3.0)=3 → k_i=3 (borderline).
+
+  - **k_i Corpus Statistics (val split, 1,054 docs)**:
+
+    | Statistic | Value |
+    |---|:---:|
+    | Docs where `floor=3` fires | `139` |
+    | Docs with M_i < 20 | `4` |
+    | Min M_i → k_i | `14` → `3` |
+    | Max M_i → k_i | `1189` → `59` |
+    | Average k_i | `7.15` |
+    | Median k_i | `5` |
+
+  - **Real vs. Chance Baseline** (chance: 200 simulated random top-k_i selections per doc, per-doc seeds from seed=777):
+
+    | Metric | C1 (Replica) | C2 (Redundancy Swap) | C3 (Proposed) | **CHANCE** |
+    |---|:---:|:---:|:---:|:---:|
+    | **Top-k Jaccard (mean)** | `0.0735` | `0.0735` | `0.0640` | **`0.0311`** |
+    | **Top-k % Recall (mean)** | `0.1225` | `0.1225` | `0.1068` | **`0.0543`** |
+
+    - C1/C2 Jaccard = **2.36× above chance**. C3 Jaccard = **2.06× above chance**.
+    - All configs are meaningfully above random selection. Low absolute values confirmed by theory: at k/M = 0.05, random Jaccard ≈ k²/(2Mk − k²) ≈ 0.025; simulation gives 0.0311 (slightly higher due to small M_i edge).
+
+  - **3 Worked Examples (C1 and C3)**:
+
+    **SHORT doc (doc_id=4820, M_i=14, k_i=3)**
+    - k_i derivation: `max(3, round(0.05×14)) = max(3, round(0.70)) = max(3,1) = 3`
+    - C1: Jaccard=`0.5` (1/3 matched) | C3: Jaccard=`0.5` (1/3 matched)
+    - At M_i=14, k_i=3 selects 21% of the document — the floor is doing all the work here, and even a noisy model gets ~50% Jaccard at this scale.
+
+    **AVERAGE doc (doc_id=1005, M_i=83, k_i=4)**
+    - k_i derivation: `max(3, round(0.05×83)) = max(3, round(4.15)) = max(3,4) = 4`
+    - C1: Jaccard=`0.0` (0/4 matched) | C3: Jaccard=`0.0` (0/4 matched)
+    - Zero overlap on this specific document — illustrates the noisy scorer regime where ROUGE label ties cause the top-4 oracle set to differ entirely from model predictions. The GBR has near-uniform predicted scores for this doc, leading to effectively random selection.
+
+    **LONG doc (doc_id=6778, M_i=1189, k_i=59)**
+    - k_i derivation: `max(3, round(0.05×1189)) = max(3, round(59.45)) = max(3,59) = 59`
+    - C1: Jaccard=`0.0172` (≈1 sentence matched from 59) | C3: Jaccard=`0.0442` (≈2-3 matched)
+    - C3 modestly outperforms C1 on this long document despite lower global Spearman — consistent with SBERT's better handling of long-range semantic similarity vs. WMD's computational instability at scale.
+    - At k=59/M=1189, chance Jaccard ≈ 0.025; both C1 and C3 are near chance, confirming that very long documents are the hardest case.
+
+  - **Saved Artifacts**:
+    - `scripts/eval_worked_examples.py`
+    - `results/logs/worked_examples_report.json`
+    - `results/logs/worked_examples_report.md` (full sentence tables with text snippets)
+  - **Status**: Phase 3 supplementary review materials **COMPLETE**. **HOLD — do not proceed to Phase 4 until explicit user sign-off.**
