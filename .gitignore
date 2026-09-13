@@ -46,7 +46,10 @@ data/*.gz
 # ==============================================================================
 # Model Checkpoints, Weights & Cache
 # ==============================================================================
-models/
+models/**
+!models/gbr_c1.pkl
+!models/gbr_c2.pkl
+!models/gbr_c3.pkl
 checkpoints/
 *.pt
 *.pth

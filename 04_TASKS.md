@@ -32,13 +32,11 @@ rather than deciding silently, per the project's stated workflow).
 - [x] Implement max-ROUGE-to-reference-sentence labeling (`02_METHODOLOGY.md`)
 - [ ] (Optional) Side-validation: greedy-oracle labels on ~50-doc sample,
       correlation check against max-match labels
-- [ ] Train GBR for C1 (feature vector A)
-- [ ] Train GBR for C2 (same feature vector as C1 — verify C1/C2 GBR weights
-      end up identical if training data/seed identical, since inputs are the same)
-- [ ] Train GBR for C3 (feature vector B, SBERT cosine, no WMD)
-- [ ] Log training score, validation score, feature importances for each
-- [ ] `[!]` If any GBR shows a negative training score (as base paper reported),
-      flag and investigate before proceeding — do not silently report it
+- [x] Train GBR for C1 (feature vector A) — Train R²=0.2400, Val R²=0.2474; WMD dominates at 76.6%
+- [x] Train GBR for C2 (same feature vector as C1 — verified bitwise identity: max prediction diff = 0.00e+00)
+- [x] Train GBR for C3 (feature vector B, SBERT cosine, no WMD) — Train R²=0.2259, Val R²=0.2269; TF-IDF dominates at 66.7%
+- [x] Log training score, validation score, feature importances for each (`results/logs/gbr_training_report.json`, `gbr_training_report.md`)
+- [x] `[!]` Negative training R² check: **NONE** — all three configs returned positive R². No investigation required.
 
 ## Phase 4 — Redundancy Control Modules (Weeks 4–6)
 - [ ] Implement WMD-threshold redundancy filter (C1) — reimplemented baseline
@@ -226,3 +224,37 @@ rather than deciding silently, per the project's stated workflow).
       - `position`: Median = `0.4965`, IQR = `0.5000`
       - `cosine_sbert`: Median = `0.5267`, IQR = `0.2024`
   - **Status & Next Step**: Feature extraction and alignment gate is officially **PASSED**. Ready to proceed immediately to Phase 3 GBR model training (`fit` on GradientBoostingRegressor for C1, C2, and C3).
+- **2026-09-13 (Phase 3 GBR Training COMPLETE — All Three Configs)**:
+  - **Validation Split (Document-Level, Zero Leakage)**:
+    - Holdout ratio: 85% train / 15% val, seed `42`, purely at document granularity.
+    - GBR Train: **5,974 documents** → **863,463 sentences**; Val: **1,054 documents** → **147,498 sentences**.
+    - Frozen 100-doc test set untouched.
+  - **Hyperparameters (identical for all three configs)**:
+    - `n_estimators=100`, `learning_rate=0.1`, `max_depth=4`, `min_samples_leaf=50`, `subsample=0.8`, `loss='squared_error'`, `random_state=42`.
+    - Rationale: `loss='squared_error'` implements MSE per Belila et al. eq. 6; `subsample=0.8` provides stochastic variance reduction on 863k rows; `max_depth=4` allows 4-way feature interactions while preventing single-sentence overfitting.
+  - **GBR Results Summary**:
+
+    | Metric | Config C1 (Replica) | Config C2 (Redundancy Swap) | Config C3 (Proposed) |
+    |---|---|---|---|
+    | **Train R²** | `0.2400` | `0.2400` | `0.2259` |
+    | **Val R²** | `0.2474` | `0.2474` | `0.2269` |
+    | **Train RMSE** | `0.1835` | `0.1835` | `0.1852` |
+    | **Val RMSE** | `0.1808` | `0.1808` | `0.1833` |
+    | **Train MAE** | `0.1287` | `0.1287` | `0.1308` |
+    | **Val MAE** | `0.1284` | `0.1284` | `0.1308` |
+    | **Fit Time** | 184.8s | 168.4s | 127.1s |
+    | **Negative Train R²** | ✅ None | ✅ None | ✅ None |
+
+  - **Feature Importances**:
+    - **C1/C2**: `wmd=76.6%` (dominant), `cosine_w2v=6.9%`, `tfidf=6.7%`, `ner=5.8%`, `position=3.9%`.
+    - **C3**: `tfidf=66.7%` (dominant without WMD), `cosine_sbert=24.5%`, `position=4.8%`, `ner=4.0%`.
+  - **C1 vs C2 Pipeline Sanity Check PASSED**:
+    - Max absolute prediction difference across full validation set: `0.00e+00` (bitwise identical).
+    - Feature importances: exact identity. This confirms the C1/C2 distinction is purely in the redundancy mechanism (Stage 3), not in the scoring model.
+  - **Negative R² Check**: No negative training R² observed across any config. The base paper's reported anomaly did not recur.
+  - **Key Finding — WMD Dominance in C1/C2**: WMD alone accounts for 76.6% of tree split importance, dwarfing all other features. This is a significant empirical observation: the GBR has learned that optimal-transport distance to the document centroid is the most discriminative signal for sentence importance in Indian legal text. This will be highlighted in the Discussion section alongside C3's TF-IDF dominance after WMD removal.
+  - **Saved Artifacts**:
+    - `models/gbr_c1.pkl` (0.25 MB), `models/gbr_c2.pkl` (0.25 MB), `models/gbr_c3.pkl` (0.24 MB).
+    - `results/logs/gbr_training_report.json` (full metrics JSON).
+    - `results/logs/gbr_training_report.md` (summary Markdown table).
+  - **Status & Next Step**: Phase 3 GBR training is **COMPLETE**. Proceed to Phase 4 (Redundancy Control Modules): implement WMD threshold filter for C1 and MMR/SBERT for C2 and C3.

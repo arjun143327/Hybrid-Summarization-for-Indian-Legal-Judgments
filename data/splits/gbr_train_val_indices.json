@@ -1,0 +1,10 @@
+{
+  "val_ratio": 0.15,
+  "seed": 42,
+  "n_train_docs": 5974,
+  "n_val_docs": 1054,
+  "n_train_sentences": 863463,
+  "n_val_sentences": 147498,
+  "train_indices_count": 863463,
+  "val_indices_count": 147498
+}
