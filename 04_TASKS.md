@@ -341,4 +341,33 @@ rather than deciding silently, per the project's stated workflow).
     - `scripts/eval_worked_examples.py`
     - `results/logs/worked_examples_report.json`
     - `results/logs/worked_examples_report.md` (full sentence tables with text snippets)
-  - **Status**: Phase 3 supplementary review materials **COMPLETE**. **HOLD — do not proceed to Phase 4 until explicit user sign-off.**
+  - **Status**: Phase 3 supplementary review materials **COMPLETE**.
+- **2026-09-13 (Phase 3 Stratified Rank-Correlation & Score Dispersion Analysis COMPLETE)**:
+  - **Stratified Metrics Table (Validation Split, N=1,054 docs, 147,498 sentences)**:
+
+    | Length Bucket | Docs | Sentences | Avg $M_i$ | Avg $k_i$ | Config | Spearman $\rho$ | Kendall $\tau$ | Top-$k$ Jaccard | Top-$k$ Recall | Chance Jaccard | Ratio vs Chance |
+    |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+    | **Short (<20)** | 4 | 70 | 17.5 | 3.0 | C1 (Replica) | `0.7188 ± 0.129` | `0.5418 ± 0.135` | `0.3500 ± 0.150` | `0.5000 ± 0.167` | `0.1095` | **`3.20×`** |
+    | **Short (<20)** | 4 | 70 | 17.5 | 3.0 | C3 (Proposed) | `0.6515 ± 0.189` | `0.5035 ± 0.204` | `0.2500 ± 0.250` | `0.3333 ± 0.333` | `0.1095` | **`2.28×`** |
+    | **Medium (20–500)** | 1,022 | 126,248 | 123.5 | 6.3 | C1 (Replica) | `0.5894 ± 0.150` | `0.4342 ± 0.122` | `0.0725 ± 0.100` | `0.1211 ± 0.153` | `0.0311` | **`2.33×`** |
+    | **Medium (20–500)** | 1,022 | 126,248 | 123.5 | 6.3 | C3 (Proposed) | `0.5601 ± 0.147` | `0.4083 ± 0.118` | `0.0635 ± 0.096` | `0.1061 ± 0.148` | `0.0311` | **`2.04×`** |
+    | **Long (>500)** | 28 | 21,180 | 756.4 | 37.8 | C1 (Replica) | `0.5507 ± 0.141` | `0.4010 ± 0.114` | `0.0676 ± 0.051` | `0.1226 ± 0.086` | `0.0253` | **`2.68×`** |
+    | **Long (>500)** | 28 | 21,180 | 756.4 | 37.8 | C3 (Proposed) | `0.5158 ± 0.137` | `0.3712 ± 0.107` | `0.0545 ± 0.036` | `0.1012 ± 0.064` | `0.0253` | **`2.16×`** |
+
+  - **Diagnostic on Score Compression & High-Value Sentence Suppression**:
+    - *Is score compression unique to long documents?* **No, but with critical nuances**:
+      - Across full documents, GBR predictions are shrunk toward the mean everywhere (MSE regression shrinkage on noisy labels): max predicted scores rarely exceed 0.65 even when true labels reach 1.0.
+      - In long documents, because $k_i$ is large (up to 59 sentences in doc 6778), the dozens of candidates in the top-$k_i$ pool cluster into a razor-thin band (e.g. $[0.50, 0.54]$ in C1, $[0.51, 0.59]$ in C3 for doc 6778). Tree leaf quantization creates near-ties across the top ranks.
+    - *Is the suppression of high-true sentences (surfacing around rank 30–40+ rather than top ranks) a systematic pattern?* **YES, it is systematic, caused by percentile-rank mechanics**:
+      - Across all 1,054 validation documents, the true top-$k_i$ sentences land on average at the **36th–38th percentile** of model-predicted scores (not the top 5%).
+      - Similarly, sentences with true $y \ge 0.8$ only enter the predicted top-$k_i$ **~10–11% of the time** in medium and long documents (10.6% in medium, 11.0% in long).
+      - In short docs ($M_i=14$), the floor $k_i=3$ takes the top 21.4% of the document, so sentences at the 20th–30th percentile are readily captured (42.9% capture rate, Jaccard 0.35).
+      - In long docs ($M_i=1189$), top-$k_i$ is strictly the top **4.96%** of the document. When true top-value sentences land around the 35th percentile (absolute rank ~400+), they completely miss the top-59 cutoff.
+      - In fact, for doc 6778, the true top-1 sentence landed at percentile **36.2%** (rank 431/1189) — which closely matches the corpus-wide average of 43.4% for long docs.
+      - Furthermore, for the 4 longest documents ($M_i \ge 958$), top-$k$ Jaccard never exceeds 0.04 and true top-1 sentences rank between 341 and 658.
+  - **Saved Artifacts**:
+    - `scripts/eval_stratified_by_length.py`
+    - `results/logs/stratified_length_report.json`
+    - `results/logs/stratified_length_report.md`
+  - **Status**: Phase 3 stratified analysis **COMPLETE**. **HOLD — standing by for explicit user approval before proceeding to Phase 4.**
+
