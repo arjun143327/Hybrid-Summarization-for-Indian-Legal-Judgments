@@ -389,31 +389,35 @@ rather than deciding silently, per the project's stated workflow).
     | `1.25` | `0.0124 ± 0.028` | **`96.2%`** | `8/50` (`16.0%`) | `13.1` | `94` | `396.9` | `151` |
     | `1.35` | `0.0106 ± 0.042` | **`54.4%`** | `40/50` (`80.0%`) | `6.1` | `35` | `243.6` | `246` |
 
+    - *Timing Dynamics in C1*: C1's per-document selection time decreases as $\delta$ increases (625.8 ms at $\delta=1.15$ down to 243.6 ms at $\delta=1.35$) because stricter $\delta$ produces a smaller accepted set, so each remaining candidate is compared against fewer already-selected sentences, reducing total pairwise WMD computations per document.
     - *Under-Filling Artifact Flagged*: At $\delta=1.25$ and $\delta=1.35$, the lower Self-BLEU values ($0.0124$ and $0.0106$) are heavily artificial artifacts of summary collapse: at $\delta=1.35$, 80% of documents under-fill, producing summaries averaging just 6.1 sentences (35 tokens) instead of the 14-sentence budget.
-    - *Optimal C1 Selection*: **$\delta = 1.15$** is the clear optimal threshold — it slashes Self-BLEU from 0.1181 to 0.0342 (71% reduction) while strictly maintaining **100.0% budget fulfillment** with 0 under-filled documents.
+    - *Optimal C1 Selection*: **$\delta = 1.15$** is the optimal baseline threshold — slashes Self-BLEU from 0.1181 to 0.0342 (71% reduction) while strictly maintaining **100.0% budget fulfillment** with 0 under-filled documents (625.8 ms/doc).
 
   - **Configs C2 & C3: MMR Lambda ($\lambda$) Sweep Results**:
 
     | Config | $\lambda$ | Self-BLEU-2 (mean $\pm$ std) | Budget Fulfillment % ($|S_i|/k_i$) | Under-filled Docs | Avg Sentences | Avg Tokens | Selection Time (ms/doc) | Docs / min |
     |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-    | **C2** | `0.3` | `0.0342 ± 0.037` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `158` | `1.826` | `32,864` |
+    | **C2** | **`0.3`** | **`0.0342 ± 0.037`** | **`100.0%`** | **`0/50` (`0.0%`)** | **`14.0`** | **`158`** | **`1.826`** | **`32,864`** |
     | **C2** | `0.5` | `0.0599 ± 0.050` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `216` | `1.515` | `39,600` |
-    | **C2** | **`0.7`** | `0.1394 ± 0.103` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `292` | `1.490` | `40,272` |
+    | **C2** | `0.7` | `0.1394 ± 0.103` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `292` | `1.490` | `40,272` |
     | **C2** | `0.9` | `0.2431 ± 0.152` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `334` | `1.507` | `39,810` |
-    | **C3** | `0.3` | `0.0286 ± 0.029` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `152` | `1.451` | `41,352` |
+    | **C3** | **`0.3`** | **`0.0286 ± 0.029`** | **`100.0%`** | **`0/50` (`0.0%`)** | **`14.0`** | **`152`** | **`1.451`** | **`41,352`** |
     | **C3** | `0.5` | `0.0412 ± 0.039` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `204` | `1.829` | `32,813` |
-    | **C3** | **`0.7`** | `0.1026 ± 0.084` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `274` | `1.426` | `42,067` |
+    | **C3** | `0.7` | `0.1026 ± 0.084` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `274` | `1.426` | `42,067` |
     | **C3** | `0.9` | `0.2122 ± 0.136` | **`100.0%`** | `0/50` (`0.0%`) | `14.0` | `320` | `1.456` | `41,196` |
 
     - *Budget Guarantee*: MMR guarantees **100.0% budget fulfillment** with 0 under-filled documents across all $\lambda$.
-    - *C3 vs C2 Diversity*: C3 consistently achieves lower Self-BLEU-2 than C2 at every $\lambda$ (e.g. $0.1026$ vs $0.1394$ at $\lambda=0.7$), confirming that SBERT-aligned scoring produces a candidate pool with superior diversity characteristics.
-    - *Recommended $\lambda$*: **$\lambda = 0.7$** provides the standard relevance-diversity trade-off ($|S_i|=14.0$, ~274–292 tokens), while **$\lambda = 0.5$** is available for aggressive redundancy suppression (Self-BLEU-2 $\approx 0.04$–$0.06$).
+    - *Operating Point Selection (Iso-Redundancy Comparison)*:
+      - **$\lambda = 0.3$ is selected as the primary operating point** for C2 and C3. At $\lambda=0.3$, C2 achieves Self-BLEU-2 of `0.0342` — an **exact match** to C1's operating point ($\delta=1.15$, Self-BLEU-2 `0.0342`). This establishes a clean **iso-redundancy baseline**: holding redundancy constant across configs enables a fair, unconfounded evaluation of speed and downstream ROUGE quality.
+      - **$\lambda = 0.5$ is retained as a secondary candidate** to carry into Phase 5 and Phase 6 in case $\lambda=0.3$ proves too aggressive once ROUGE quality against reference headnotes is measured.
+    - *C3 vs C2 Diversity*: C3 consistently achieves lower Self-BLEU-2 than C2 at every $\lambda$ ($0.0286$ vs $0.0342$ at $\lambda=0.3$), confirming that SBERT-aligned scoring produces a candidate pool with superior diversity characteristics.
 
-  - **Wall-Clock Efficiency Benchmark (Selection Loop Only)**:
-    - **C1 (WMD-threshold)**: `470.5 ms/doc` ($\approx 96$–$246$ docs/min)
-    - **C2 (MMR / SBERT)**: `1.585 ms/doc` ($\approx 39,000$ docs/min)
-    - **C3 (MMR / SBERT)**: `1.541 ms/doc` ($\approx 41,000$ docs/min)
-    - **Empirical Speedup**: MMR selection is **`305.4×` faster** than the WMD-threshold filter, validating the paper's core efficiency contribution on identical hardware.
+  - **Headline Wall-Clock Speedup (Selected Operating Points)**:
+    - *Comparison Basis*: Evaluated strictly at the selected operating points ($\delta=1.15$ vs $\lambda=0.3$) rather than a blended average across the grid (which included the degenerate $\delta=1.35$ setting with 80% under-filling).
+    - **C1 ($\delta=1.15$)**: `625.8 ms/doc` (96 docs/min)
+    - **C2 ($\lambda=0.3$)**: `1.826 ms/doc` (32,864 docs/min) $\to$ **`342.7×` faster than C1**
+    - **C3 ($\lambda=0.3$)**: `1.451 ms/doc` (41,352 docs/min) $\to$ **`431.3×` faster than C1**
+    - This provides strong empirical validation of the paper's core computational efficiency contribution on identical hardware.
 
   - **Saved Artifacts**:
     - `src/redundancy/wmd_filter.py`
@@ -423,6 +427,6 @@ rather than deciding silently, per the project's stated workflow).
     - `scripts/run_phase4_sweeps.py`
     - `results/logs/phase4_redundancy_sweep.json`
     - `results/logs/phase4_redundancy_sweep.md`
-  - **Status**: Phase 4 Redundancy Control Sweeps **COMPLETE**. **HOLD — standing by for user review and approval before Phase 5 (BART Refinement) begins.**
+  - **Status**: Phase 4 Redundancy Control Sweeps **COMPLETE**. **HOLD — standing by for user review and approval before Phase 5 (Extractive Selection + BART Refinement) begins.**
 
 

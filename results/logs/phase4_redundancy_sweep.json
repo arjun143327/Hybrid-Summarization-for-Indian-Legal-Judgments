@@ -8042,6 +8042,30 @@
     "c1_wmd_filter_mean_ms_per_doc": 470.53,
     "c2_mmr_mean_ms_per_doc": 1.585,
     "c3_mmr_mean_ms_per_doc": 1.541,
-    "mmr_speedup_vs_wmd": 305.4
+    "mmr_speedup_vs_wmd_blended": 305.4
+  },
+  "selected_operating_points": {
+    "c1": {
+      "delta": 1.15,
+      "self_bleu_2": 0.0342,
+      "budget_fulfillment_pct": 100.0,
+      "selection_time_ms_per_doc": 625.8
+    },
+    "c2": {
+      "lambda_primary": 0.3,
+      "lambda_secondary": 0.5,
+      "self_bleu_2_primary": 0.0342,
+      "budget_fulfillment_pct": 100.0,
+      "selection_time_ms_per_doc": 1.826,
+      "speedup_vs_c1_operating_point": 342.7
+    },
+    "c3": {
+      "lambda_primary": 0.3,
+      "lambda_secondary": 0.5,
+      "self_bleu_2_primary": 0.0286,
+      "budget_fulfillment_pct": 100.0,
+      "selection_time_ms_per_doc": 1.451,
+      "speedup_vs_c1_operating_point": 431.3
+    }
   }
 }
